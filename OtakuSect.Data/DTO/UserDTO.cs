@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OtakuSect.Data
+namespace OtakuSect.Data.DTO
 {
     public class UserDTO
     {

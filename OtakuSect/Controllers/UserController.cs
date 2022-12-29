@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OtakuSect.Data;
+using OtakuSect.ViewModel;
 using System.Security.Claims;
 
 namespace OtakuSect.Controllers
@@ -11,39 +12,37 @@ namespace OtakuSect.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
         [HttpGet("Admins")]
         [Authorize(Roles ="admin")]
        
         public IActionResult AdminsEndPoint()
         {
             var currentUser = GetCurrentUser();
-            if (currentUser.Role != "Admin")
+            if (currentUser.Role != "admin")
             {
                 return Unauthorized("Only sectmaster is allowed here");
             }
-            return Ok($" Hi {currentUser.FirstName} youre  an imortal being {currentUser.Role}");
+            return Ok($" Hi {currentUser.UserId} youre  an imortal being {currentUser.Role}");
 
         }
 
-        private UserModel GetCurrentUser()
+        private UserViewModel GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
             {
                 var userClaims = identity.Claims;
-                return new UserModel
+                return new UserViewModel
                 {
-                    UserName = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
+                    UserId =Guid.Parse( userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
                     EmailAddress = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
-
-                    FirstName = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.GivenName)?.Value,
-                    LastName = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
                     Role = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
 
                 };
                 return null;
             }
-            return new UserModel();
+            return new UserViewModel();
         }
     }
 

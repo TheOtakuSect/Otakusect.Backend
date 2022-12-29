@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace OtakuSect.Data
 {
-    public class UserModel
+    public class User
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-
         public string EmailAddress { get; set; }
-
-        public string Role { get; set; }
-
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public UserRole UserRole { get; set; }
+        public Guid UserRoleId { get; set; }
     }
 }
