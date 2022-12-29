@@ -48,16 +48,16 @@ namespace OtakuSect.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ArticleId")
+                    b.Property<Guid?>("ArticleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CommentId")
+                    b.Property<Guid?>("CommentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PostId")
+                    b.Property<Guid?>("PostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -96,6 +96,9 @@ namespace OtakuSect.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CommentDateTime")
                         .HasColumnType("datetime2");
 
@@ -118,6 +121,8 @@ namespace OtakuSect.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("PostId");
 
@@ -240,22 +245,16 @@ namespace OtakuSect.Data.Migrations
             modelBuilder.Entity("OtakuSect.Data.Attachment", b =>
                 {
                     b.HasOne("OtakuSect.Data.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Attachments")
+                        .HasForeignKey("ArticleId");
 
                     b.HasOne("OtakuSect.Data.Comment", "Comment")
-                        .WithMany()
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Attachments")
+                        .HasForeignKey("CommentId");
 
                     b.HasOne("OtakuSect.Data.Post", "Post")
                         .WithMany("Attachments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.Navigation("Article");
 
@@ -273,10 +272,16 @@ namespace OtakuSect.Data.Migrations
 
             modelBuilder.Entity("OtakuSect.Data.Comment", b =>
                 {
+                    b.HasOne("OtakuSect.Data.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OtakuSect.Data.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OtakuSect.Data.User", "User")
@@ -284,6 +289,8 @@ namespace OtakuSect.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Article");
 
                     b.Navigation("Post");
 
@@ -337,9 +344,18 @@ namespace OtakuSect.Data.Migrations
 
             modelBuilder.Entity("OtakuSect.Data.Article", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("Categories");
 
+                    b.Navigation("Comments");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("OtakuSect.Data.Comment", b =>
+                {
+                    b.Navigation("Attachments");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Post", b =>

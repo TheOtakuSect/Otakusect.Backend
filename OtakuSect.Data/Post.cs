@@ -18,9 +18,8 @@ namespace OtakuSect.Data
         public DateTime PostedDateTime { get; set; }
         public double TotalRate { get; set; }
         public int ViewCount { get; set; }
-
-        public Guid UserId { get; set; }
         public User User { get; set; }
+        public Guid UserId { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
 

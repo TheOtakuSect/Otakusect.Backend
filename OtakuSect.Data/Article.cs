@@ -15,5 +15,7 @@ namespace OtakuSect.Data
         public int ViewCount { get; set; }
         public List<Category> Categories { get; set; }
         public List<User> Users { get; set; }
+        public List<Attachment> Attachments { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

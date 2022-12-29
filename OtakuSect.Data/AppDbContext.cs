@@ -22,13 +22,30 @@ namespace OtakuSect.Data
             {
                 entity.HasOne(d => d.User);
                 entity.HasOne(d => d.Post);
-
+                entity.HasOne(d => d.Article);
+                entity.HasMany(d => d.Attachments);
             });
             modelBuilder.Entity<Post>(entity =>
             {
                 entity.HasOne(d => d.User);
-                entity.HasMany(d => d.Comments);
+                entity.HasMany(d => d.Comments).WithOne(x=>x.Post).OnDelete(DeleteBehavior.NoAction);
+                entity.HasMany(d => d.Attachments);
             });
+            modelBuilder.Entity<Attachment>(entity =>
+            {
+                entity.HasOne(d => d.Article);
+                entity.HasOne(d => d.Post);
+                entity.HasOne(d => d.Comment);
+
+            });
+            modelBuilder.Entity<Attachment>(entity =>
+            {
+                entity.HasOne(d => d.Article);
+                entity.HasOne(d => d.Post);
+                entity.HasOne(d => d.Comment);
+                
+            });
+            
 
         }
 
