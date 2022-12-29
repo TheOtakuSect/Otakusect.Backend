@@ -45,7 +45,7 @@ namespace OtakuSect.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Email,user.EmailAddress),           
+                new Claim(ClaimTypes.Email,user.EmailAddress),
                 new Claim(ClaimTypes.Role,user.UserRole.Role),
             };
 
@@ -58,10 +58,10 @@ namespace OtakuSect.Controllers
 
         }
 
-            private User Authenticate(UserDTO userDTO)
+        private User Authenticate(UserDTO userDTO)
         {
-            
-            var current_user =  _context.Users.FirstOrDefault(o=>o.UserName.ToLower()==userDTO.UserName.ToLower()&& o.Password == password2hash(userDTO.Password));
+
+            var current_user = _context.Users.Include(x=>x.UserRole).FirstOrDefault(o => o.UserName.ToLower() == userDTO.UserName.ToLower() && o.Password == password2hash(userDTO.Password));
             if (current_user != null)
             {
                 return current_user;
