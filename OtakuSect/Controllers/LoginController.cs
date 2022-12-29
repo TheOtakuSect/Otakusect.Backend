@@ -8,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
+using OtakuSect.Data.DTO;
+
 namespace OtakuSect.Controllers
 {
     [Route("api/[controller]")]
@@ -36,18 +38,15 @@ namespace OtakuSect.Controllers
             }
             return NotFound("User not found");
         }
-        private string Generate(UserModel user)
+        private string Generate(User user)
         {
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_iconfig["Jwt:Key"]));
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier,user.UserName),
-                new Claim(ClaimTypes.Email,user.EmailAddress),
-                new Claim(ClaimTypes.GivenName,user.FirstName),
-
-                new Claim(ClaimTypes.Surname,user.LastName),
-                new Claim(ClaimTypes.Role,user.Role),
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimTypes.Email,user.EmailAddress),           
+                new Claim(ClaimTypes.Role,user.UserRole.Role),
             };
 
             var token = new JwtSecurityToken(_iconfig["Jwt:Issuer"],
@@ -59,10 +58,10 @@ namespace OtakuSect.Controllers
 
         }
 
-            private UserModel Authenticate(UserDTO userDTO)
+            private User Authenticate(UserDTO userDTO)
         {
             
-            var current_user =  _context.users.FirstOrDefault(o=>o.UserName.ToLower()==userDTO.UserName.ToLower()&& o.Password == password2hash(userDTO.Password));
+            var current_user =  _context.Users.FirstOrDefault(o=>o.UserName.ToLower()==userDTO.UserName.ToLower()&& o.Password == password2hash(userDTO.Password));
             if (current_user != null)
             {
                 return current_user;
