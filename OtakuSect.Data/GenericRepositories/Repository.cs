@@ -9,14 +9,14 @@ namespace OtakuSect.Data.GenericRepositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly AppDbContext _context;
+        public readonly AppDbContext _context;
         public Repository(AppDbContext context)
         {
             _context = context;
         }
         public async Task<T> AddAsync(T item)
         {
-            await _context.Set<T>.AddAsync(item);
+            await _context.Set<T>().AddAsync(item);
             await _context.SaveChangesAsync();
             return item;
         }
@@ -37,7 +37,7 @@ namespace OtakuSect.Data.GenericRepositories
         }
         public async Task<T> UpdateAsync(T item)
         {
-            _context.Set<T>().ExecuteUpdateAsync(item);
+            _context.Set<T>().Update(item);
             _context.SaveChanges();
             return item;
         }
