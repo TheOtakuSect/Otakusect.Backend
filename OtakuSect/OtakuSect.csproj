@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OtakuSect.Data\OtakuSect.Data.csproj" />
+    <ProjectReference Include="..\OtakuSect.BussinessLayer\OtakuSect.BussinessLayer.csproj" />
+    <ProjectReference Include="..\OtakuSect.ViewModel\OtakuSect.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

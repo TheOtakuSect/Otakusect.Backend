@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,11 +36,12 @@ namespace OtakuSect.Data.GenericRepositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
-        public async Task<T> UpdateAsync(T item)
+        public async Task<T> UpdateAsync(Guid id)
         {
-            _context.Set<T>().Update(item);
+            var result = await _context.Set<T>().FindAsync(id);
+            _context.Set<T>().Update(result);
             _context.SaveChanges();
-            return item;
+            return result;
         }
     }
 }

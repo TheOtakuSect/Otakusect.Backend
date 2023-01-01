@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace OtakuSect.Helper
+namespace OtakuSect.BussinessLayer.Helper
 {
     public static class PasswordHasher
     {
