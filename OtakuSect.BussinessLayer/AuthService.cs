@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using OtakuSect.BussinessLayer.Helper;
 using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
@@ -100,7 +102,6 @@ namespace OtakuSect.BussinessLayer
             }
             return new User();
         }
-
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OtakuSect.Data;
+using OtakuSect.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace OtakuSect.BussinessLayer
 {
     public interface IUserService
     {
-        public Task<User> UpdateUser(User user);
+        public Task<User> UpdateUser(Guid uId,UserViewModel userViewModel);
     }
 }

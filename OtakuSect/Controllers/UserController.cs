@@ -15,16 +15,17 @@ namespace OtakuSect.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly IAuthService authService;
+        private readonly IAuthService _authService;
         public UserController(IUserService userService, IAuthService authService)
         {
             this.userService = userService;
-            this.authService = authService;
+            _authService = authService;
         }
-        [HttpPost("update")]
-        public async Task<IActionResult> UpdateUser(User user)
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(UserViewModel userViewModel)
         {
-            var result = userService.UpdateUser(user);
+            var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = userService.UpdateUser(uId,userViewModel);
             if (result == null)
             {
                 return BadRequest(result);
