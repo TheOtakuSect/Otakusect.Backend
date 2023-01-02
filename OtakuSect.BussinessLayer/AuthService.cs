@@ -62,6 +62,7 @@ namespace OtakuSect.BussinessLayer
             {
                 Id = Guid.NewGuid(),
                 UserRoleId = Guid.Parse("f5f8eda2-be15-48dc-b5e5-51008897fc34"),
+                UserName= user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
@@ -77,7 +78,7 @@ namespace OtakuSect.BussinessLayer
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
-            {
+            {  
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
                 new Claim(ClaimTypes.Email,user.EmailAddress),
                 new Claim(ClaimTypes.Role,user.UserRole.Role),
@@ -99,6 +100,7 @@ namespace OtakuSect.BussinessLayer
             }
             return new User();
         }
+
         #endregion
     }
 }

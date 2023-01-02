@@ -24,8 +24,8 @@ namespace OtakuSect.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserDTO userDTO)
         {
             var token = await _authService.Login(userDTO.UserName, userDTO.Password);

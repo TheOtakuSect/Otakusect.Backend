@@ -36,12 +36,12 @@ namespace OtakuSect.Data.GenericRepositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
-        public async Task<T> UpdateAsync(Guid id)
+        public async Task<T> UpdateAsync(T t)
         {
-            var result = await _context.Set<T>().FindAsync(id);
-            _context.Set<T>().Update(result);
+            _context.Set<T>().Update(t);
             _context.SaveChanges();
-            return result;
+            return t;
         }
+
     }
 }

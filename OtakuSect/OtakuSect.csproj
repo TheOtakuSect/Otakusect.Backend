@@ -22,4 +22,8 @@
     <ProjectReference Include="..\OtakuSect.ViewModel\OtakuSect.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
