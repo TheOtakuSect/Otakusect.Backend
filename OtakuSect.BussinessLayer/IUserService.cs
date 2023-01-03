@@ -12,5 +12,6 @@ namespace OtakuSect.BussinessLayer
     public interface IUserService
     {
         public Task<User> UpdateUser(Guid uId,UserViewModel userViewModel);
+        public IAsyncEnumerable<User> GetAllUser();
     }
 }

@@ -88,7 +88,7 @@ namespace OtakuSect.BussinessLayer
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(2880),
                 signingCredentials: credentials);
             var encodedJWT = new JwtSecurityTokenHandler().WriteToken(token);
             return encodedJWT;

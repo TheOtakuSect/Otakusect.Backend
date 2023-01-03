@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OtakuSect.Data\OtakuSect.Data.csproj" />
+  </ItemGroup>
+
 </Project>
