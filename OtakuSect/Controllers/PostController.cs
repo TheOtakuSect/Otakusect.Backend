@@ -37,9 +37,9 @@ namespace OtakuSect.Controllers
         /// <param name="pId"></param>
         /// <returns></returns>
         [HttpGet("getpostbyid/{pId}")]
-        public IActionResult GetById(Guid pId)
+        public async Task<IActionResult> GetById(Guid pId)
         {
-            var result = _postService.GetPostById(pId);
+            var result =await  _postService.GetPostById(pId);
             if (result != null)
             {
                 return Ok(result);
