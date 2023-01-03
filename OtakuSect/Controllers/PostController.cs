@@ -12,23 +12,55 @@ namespace OtakuSect.Controllers
     public class PostController : ControllerBase
     {
         public IAuthService _authService;
-        public IAttachmentService _attachmentService;
         public IPostService _postService;
-        public IPostRepository _postRepository;
-
-        public PostController(IPostRepository postRepository,IAttachmentService attachmentService,IPostService postService, IAuthService authService)
+        public PostController(IPostService postService, IAuthService authService)
         {
-            _postRepository = postRepository;
-            _attachmentService = attachmentService;
             _postService = postService;
             _authService = authService;
         }
+        /// <summary>
+        /// Allows user to post the content throught the postViewModel
+        /// </summary>
+        /// <param name="postViewModel"></param>
+        /// <returns></returns>
         [HttpPost("postcontent")]
         public IActionResult PostContent([FromForm]PostViewModel postViewModel)
         {
             var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
             var post = _postService.PostContent(uId,postViewModel);
             return Ok(post);
+        }
+
+        /// <summary>
+        /// Gets Post by throught PostId
+        /// </summary>
+        /// <param name="pId"></param>
+        /// <returns></returns>
+        [HttpGet("getpostbyid/{pId}")]
+        public IActionResult GetById(Guid pId)
+        {
+            var result = _postService.GetPostById(pId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
+        /// <summary>
+        /// Gets Post by throught PostId
+        /// </summary>
+        /// <param name="pId"></param>
+        /// <returns></returns>
+        [HttpGet("delete/{pId}")]
+        public IActionResult DeleteById(Guid pId)
+        {
+            var result = _postService.DeletePost(pId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
         }
     }
 }

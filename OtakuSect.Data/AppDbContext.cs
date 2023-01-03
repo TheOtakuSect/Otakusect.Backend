@@ -11,7 +11,7 @@ namespace OtakuSect.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Article> Articles { get; set; }
-        public DbSet<PostViewModel> Posts { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments{ get; set; }
         public DbSet<Rate> Rates { get; set; }
@@ -25,7 +25,7 @@ namespace OtakuSect.Data
                 entity.HasOne(d => d.Article);
                 entity.HasMany(d => d.Attachments);
             });
-            modelBuilder.Entity<PostViewModel>(entity =>
+            modelBuilder.Entity<Post>(entity =>
             {
                 entity.HasOne(d => d.User);
                 entity.HasMany(d => d.Comments).WithOne(x=>x.Post).OnDelete(DeleteBehavior.NoAction);

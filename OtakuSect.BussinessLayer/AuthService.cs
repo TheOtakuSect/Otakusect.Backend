@@ -75,6 +75,11 @@ namespace OtakuSect.BussinessLayer
         }
 
         #region Private Methods
+        /// <summary>
+        /// Generates JWT token for the authentication
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private string GenerateToken(User user)
         {
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -93,6 +98,12 @@ namespace OtakuSect.BussinessLayer
             var encodedJWT = new JwtSecurityTokenHandler().WriteToken(token);
             return encodedJWT;
         }
+        /// <summary>
+        /// Authenticates User
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         private async Task<User> Authenticate(string userName, string password)
         {
             var user = await _userRepo.GetUserNameandPassword(userName, PasswordHasher.Password2hash(password));

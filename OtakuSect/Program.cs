@@ -54,14 +54,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IPostRepository, PostRepository>();
+builder.Services.AddTransient<IPostService, PostService>();
+builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+builder.Services.AddTransient<IAdminService, AdminService>();
 builder.Services.AddControllers();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPostRepository,PostRepository>();
-builder.Services.AddScoped<IPostService,PostService>();
-builder.Services.AddScoped<IAttachmentService, AttachmentService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
+
 
 
 

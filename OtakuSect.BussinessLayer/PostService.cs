@@ -1,5 +1,6 @@
 ﻿using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
+using OtakuSect.ViewModel;
 
 namespace OtakuSect.BussinessLayer
 {
@@ -7,36 +8,25 @@ namespace OtakuSect.BussinessLayer
     {
         public readonly IAttachmentService _attachmentService;
         public readonly IPostRepository _postRepository;
-        public static ApiResponse<Data.PostViewModel> apiResponse = new ApiResponse<Data.PostViewModel>();
+        public static ApiResponse<Post> apiResponse = new ApiResponse<Post>();
 
         public PostService(IAttachmentService attachmentService, IPostRepository postRepository)
         {
             _attachmentService = attachmentService;
             _postRepository = postRepository;
         }
-
-        public void DeletePost(Guid Id)
+        /// <summary>
+        /// Posts Content by creating a new Post model and filling input from postViewModel
+        /// </summary>
+        /// <param name="uId"></param>
+        /// <param name="postViewModel"></param>
+        /// <returns></returns>
+        public ApiResponse<Post> PostContent(Guid uId, PostViewModel postViewModel)
         {
-            _postRepository.DeleteAsync(Id);
-        }
-
-        public Task<Data.PostViewModel> EditPost(ViewModel.PostViewModel postViewModel)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public Task<Data.PostViewModel> GetPostById(Guid id, ViewModel.PostViewModel postViewModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ApiResponse<Data.PostViewModel> PostContent(Guid uId, ViewModel.PostViewModel postViewModel)
-        {
-
+            var apiResponse = new ApiResponse<Post>();
             try
             {
-                var newPost = new Data.PostViewModel()
+                var newPost = new Post()
                 {
                     Id = Guid.NewGuid(),
                     Title = postViewModel.Title,
@@ -56,6 +46,38 @@ namespace OtakuSect.BussinessLayer
             {
                 apiResponse.StatusCode = 500;
                 apiResponse.Message = "content posted successfully!!";
+                return apiResponse;
+            }
+        }
+        /// <summary>
+        /// Deletes Post through pId
+        /// </summary>
+        /// <param name="pId"></param>
+        public ApiResponse<string> DeletePost(Guid pId)
+        {
+            _postRepository.DeleteAsync(pId);
+            return new ApiResponse<string>();
+        }
+        /// <summary>
+        /// Gets posts through pId
+        /// </summary>
+        /// <param name="pId"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse<Post>> GetPostById(Guid pId)
+        {
+            try
+            {
+                var post =  await  _postRepository.GetByIdAsync(pId);
+                apiResponse.StatusCode = 200;
+                apiResponse.Success = true;
+                apiResponse.Data = post;
+                apiResponse.Message = "content fetched successfully!!";
+                return apiResponse;
+            }
+            catch
+            {
+                apiResponse.StatusCode = 500;
+                apiResponse.Message = "content couldnt be fetched successfully!!";
                 return apiResponse;
             }
         }

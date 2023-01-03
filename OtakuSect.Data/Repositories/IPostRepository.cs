@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace OtakuSect.Data.Repositories
 {
-    public interface IPostRepository: IRepository<PostViewModel>
+    public interface IPostRepository: IRepository<Post>
     {
-
     }
 }

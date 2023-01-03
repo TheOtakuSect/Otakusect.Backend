@@ -32,9 +32,9 @@ namespace OtakuSect.Data.GenericRepositories
         {
             return await _context.Set<T>().ToListAsync();
         }
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(Guid Id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _context.Set<T>().FindAsync(Id);
         }
         public async Task<T> UpdateAsync(T t)
         {

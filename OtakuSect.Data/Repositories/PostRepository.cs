@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OtakuSect.Data.Repositories
 {
-    public class PostRepository : Repository<PostViewModel>, IPostRepository
+    public class PostRepository : Repository<Post>, IPostRepository
     {
         public PostRepository(AppDbContext context) : base(context)
         {

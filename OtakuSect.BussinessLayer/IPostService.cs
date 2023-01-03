@@ -1,11 +1,13 @@
 ﻿using OtakuSect.Data;
+using OtakuSect.ViewModel;
+
 namespace OtakuSect.BussinessLayer
 {
     public interface IPostService
     {
-        public ApiResponse<Data.PostViewModel> PostContent(Guid uId, ViewModel.PostViewModel postViewModel);
-        public void DeletePost(Guid Id);
-        public Task<Data.PostViewModel> EditPost(ViewModel.PostViewModel postViewModel);
-        public Task<Data.PostViewModel> GetPostById(Guid id, ViewModel.PostViewModel postViewModel);
+        public ApiResponse<Post> PostContent(Guid uId, PostViewModel postViewModel);
+        public ApiResponse<string> DeletePost(Guid pId);
+        public Task<ApiResponse<Post>> GetPostById(Guid pId);
     }
 }
+

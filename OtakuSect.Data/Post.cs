@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OtakuSect.Data
 {
-    public class PostViewModel 
+    public class Post 
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
