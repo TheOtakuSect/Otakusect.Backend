@@ -58,7 +58,7 @@ namespace OtakuSect.BussinessLayer
         /// <summary>
         /// Register new user using user:UserViewModel
         /// </summary>
-        public async Task<User> Register(UserViewModel user)
+        public async Task<ApiResponse<User>> Register(UserViewModel user)
         {
             var newUser = new User()
             {
@@ -70,8 +70,25 @@ namespace OtakuSect.BussinessLayer
                 EmailAddress = user.EmailAddress,
                 Password = PasswordHasher.Password2hash(user.Password),
             };
-            await _userRepo.AddAsync(newUser);
-            return newUser;
+            var apiResponse = new ApiResponse<User>();
+            try
+            {
+                await _userRepo.AddAsync(newUser);
+                apiResponse.Success = true;
+                apiResponse.Message = "User registered Successfully.";
+                apiResponse.StatusCode = 200;
+                apiResponse.Data = newUser;
+                return apiResponse;
+
+            }
+            catch (Exception ex)
+            {
+                apiResponse.Success = false;
+                apiResponse.Message=ex.Message;
+                apiResponse.StatusCode = 500;
+                return apiResponse;
+
+            }
         }
 
         #region Private Methods

@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
-using OtakuSect.Data.Repositories;
 using OtakuSect.ViewModel;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 
 namespace OtakuSect.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/post")]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -18,28 +17,21 @@ namespace OtakuSect.Controllers
             _postService = postService;
             _authService = authService;
         }
-        /// <summary>
-        /// Allows user to post the content throught the postViewModel
-        /// </summary>
-        /// <param name="postViewModel"></param>
-        /// <returns></returns>
-        [HttpPost("postcontent")]
-        public IActionResult PostContent([FromForm]PostViewModel postViewModel)
+
+        [SwaggerOperation(Summary = "Save Post in database")]
+        [HttpPost]
+        public IActionResult PostContent([FromForm] PostViewModel postViewModel)
         {
             var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var post = _postService.PostContent(uId,postViewModel);
+            var post = _postService.PostContent(uId, postViewModel);
             return Ok(post);
         }
 
-        /// <summary>
-        /// Gets Post by throught PostId
-        /// </summary>
-        /// <param name="pId"></param>
-        /// <returns></returns>
-        [HttpGet("getpostbyid/{pId}")]
-        public async Task<IActionResult> GetById(Guid pId)
+        [SwaggerOperation(Summary = "Get Post by Id")]
+        [HttpGet]
+        public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
-            var result =await  _postService.GetPostById(pId);
+            var result = await _postService.GetPostById(id);
             if (result != null)
             {
                 return Ok(result);
@@ -47,15 +39,11 @@ namespace OtakuSect.Controllers
             return BadRequest();
         }
 
-        /// <summary>
-        /// Gets Post by throught PostId
-        /// </summary>
-        /// <param name="pId"></param>
-        /// <returns></returns>
-        [HttpGet("delete/{pId}")]
-        public IActionResult DeleteById(Guid pId)
+        [SwaggerOperation(Summary = "Delete Post by Id")]
+        [HttpDelete]
+        public IActionResult DeleteById([FromQuery] Guid id)
         {
-            var result = _postService.DeletePost(pId);
+            var result = _postService.DeletePost(id);
             if (result != null)
             {
                 return Ok(result);

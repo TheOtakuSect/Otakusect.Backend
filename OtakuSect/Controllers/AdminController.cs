@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace OtakuSect.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin")]
     [ApiController]
+    [Authorize(Roles = "SectMaster")]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
@@ -16,15 +18,16 @@ namespace OtakuSect.Controllers
             _adminService = adminService;
         }
 
-        [HttpPost("changerole/{uId}")]
-        [Authorize(Roles ="SectMaster")]
-        public IActionResult ChangeUserRole(Guid uId)
+        [SwaggerOperation(Summary = "Change User Role to Sect Leader")]
+        [HttpPost("user/role")]
+        public IActionResult ChangeUserRole([FromQuery]Guid id)
         {
-            var result = _adminService.ChangeRole(uId);
+            var result = _adminService.ChangeRole(id);
             return Ok(result);
         }
-        [HttpPost("getalluser")]
-        [Authorize(Roles = "SectMaster")]
+
+        [SwaggerOperation(Summary = "Get all Users")]
+        [HttpGet("users")]
         public IActionResult GetallUser()
         {
             var result = _adminService.GetAllUser();
