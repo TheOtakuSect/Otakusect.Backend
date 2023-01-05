@@ -28,9 +28,9 @@ namespace OtakuSect.Data.GenericRepositories
             return null;
 
         }
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(string predicate=null)
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>().Include(predicate??predicate).ToListAsync();
         }
         public async Task<T> GetByIdAsync(Guid Id)
         {

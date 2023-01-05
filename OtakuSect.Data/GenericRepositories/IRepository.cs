@@ -8,7 +8,7 @@ namespace OtakuSect.Data.GenericRepositories
 {
     public interface IRepository<T> 
     {
-         Task<IEnumerable<T>> GetAllAsync();
+         Task<IEnumerable<T>> GetAllAsync(string predicate);
          Task<T> GetByIdAsync(Guid Id);
          Task<T> UpdateAsync( T t);
          Task<T> DeleteAsync(Guid id);

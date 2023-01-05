@@ -7,23 +7,17 @@ namespace OtakuSect.BussinessLayer
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IAuthService _authService;
-        public UserService(IUserRepository userRepository, IAuthService authServce, AppDbContext context)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _authService = authServce;
         }
-
-        public async IAsyncEnumerable<User> GetAllUser()
-        {
-            var users = await _userRepository.GetAllAsync();
-            foreach (var user in users)
-            {
-                yield return user;
-            }
-        }
-
-
+       
+        /// <summary>
+        /// Lets the user to update information
+        /// </summary>
+        /// <param name="uId"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<User> UpdateUser(Guid uId, UserViewModel user)
         {
             var result = await _userRepository.GetByIdAsync(uId);

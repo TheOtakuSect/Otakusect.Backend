@@ -16,8 +16,5 @@ namespace OtakuSect.Data
         public Guid? ArticleId { get; set; }
         public Comment Comment { get; set; }
         public Guid? CommentId { get; set; }
-
-        
-
     }
 }
