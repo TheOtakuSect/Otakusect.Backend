@@ -2,48 +2,36 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using OtakuSect.BussinessLayer;
 using OtakuSect.Data;
+using OtakuSect.Data.GenericRepositories;
 using OtakuSect.ViewModel;
 using System.Security.Claims;
-
 namespace OtakuSect.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
-
-        [HttpGet("Admins")]
-        [Authorize(Roles ="admin")]
-       
-        public IActionResult AdminsEndPoint()
+        private readonly IUserService userService;
+        private readonly IAuthService _authService;
+        public UserController(IUserService userService, IAuthService authService)
         {
-            var currentUser = GetCurrentUser();
-            if (currentUser.Role != "admin")
+            this.userService = userService;
+            _authService = authService;
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(UserViewModel userViewModel)
+        {
+            var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = userService.UpdateUser(uId,userViewModel);
+            if (result == null)
             {
-                return Unauthorized("Only sectmaster is allowed here");
+                return BadRequest(result);
             }
-            return Ok($" Hi {currentUser.UserId} youre  an imortal being {currentUser.Role}");
-
+            return Ok(result);
         }
 
-        private UserViewModel GetCurrentUser()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                var userClaims = identity.Claims;
-                return new UserViewModel
-                {
-                    UserId =Guid.Parse( userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
-                    EmailAddress = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
-                    Role = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
-
-                };
-                return null;
-            }
-            return new UserViewModel();
-        }
     }
-
 }

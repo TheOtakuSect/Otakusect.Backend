@@ -5,7 +5,11 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtakuSect", "OtakuSect\OtakuSect.csproj", "{F4B50E06-F8E0-413B-BE47-5652B1FBDE7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtakuSect.Data", "OtakuSect.Data\OtakuSect.Data.csproj", "{8DC3CE37-7FEF-4940-AE52-8DBF3E74D4E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtakuSect.Data", "OtakuSect.Data\OtakuSect.Data.csproj", "{8DC3CE37-7FEF-4940-AE52-8DBF3E74D4E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtakuSect.BussinessLayer", "OtakuSect.BussinessLayer\OtakuSect.BussinessLayer.csproj", "{9707397E-F35D-4385-8211-AD1D1567CD2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtakuSect.ViewModel", "OtakuSect.ViewModel\OtakuSect.ViewModel.csproj", "{1CD1BA40-279F-4DF6-BA1B-AB1F46C7DCFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{8DC3CE37-7FEF-4940-AE52-8DBF3E74D4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC3CE37-7FEF-4940-AE52-8DBF3E74D4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC3CE37-7FEF-4940-AE52-8DBF3E74D4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9707397E-F35D-4385-8211-AD1D1567CD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9707397E-F35D-4385-8211-AD1D1567CD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9707397E-F35D-4385-8211-AD1D1567CD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9707397E-F35D-4385-8211-AD1D1567CD2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CD1BA40-279F-4DF6-BA1B-AB1F46C7DCFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CD1BA40-279F-4DF6-BA1B-AB1F46C7DCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CD1BA40-279F-4DF6-BA1B-AB1F46C7DCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CD1BA40-279F-4DF6-BA1B-AB1F46C7DCFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

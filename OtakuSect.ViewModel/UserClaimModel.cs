@@ -1,10 +1,7 @@
-﻿using OtakuSect.Data;
-
-namespace OtakuSect.ViewModel
+﻿namespace OtakuSect.ViewModel
 {
-    public class UserViewModel
+    public class UserClaimModel
     {
-   
         public Guid UserId { get; set; }
         public string EmailAddress { get; set; }
         public string Role { get; set; }
