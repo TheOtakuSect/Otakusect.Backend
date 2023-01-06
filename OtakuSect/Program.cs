@@ -76,6 +76,16 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 #endregion
 
+#region Cors Ploicy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("OtakuCORS", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+    });
+});
+#endregion
+
 builder.Services.AddEndpointsApiExplorer();
 
 #region Adding Cors
@@ -100,5 +110,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("OtakuCORS");
 app.Run();
 #endregion
