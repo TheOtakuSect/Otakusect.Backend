@@ -15,6 +15,7 @@ namespace OtakuSect.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Attachment> Attachments{ get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<UserArticle> UsersArticles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,9 +46,11 @@ namespace OtakuSect.Data
                 entity.HasOne(d => d.Comment);
                 
             });
-            
-
+            modelBuilder.Entity<UserArticle>(entity =>
+            {
+                entity.HasOne(d => d.User);
+                entity.HasOne(d => d.Article);
+            });
         }
-
     }
 }

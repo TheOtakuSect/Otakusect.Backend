@@ -15,12 +15,16 @@ namespace OtakuSect.Data.GenericRepositories
         {
             _context = context;
         }
+        #region Generic add method
         public async Task<T> AddAsync(T item)
         {
             await _context.Set<T>().AddAsync(item);
             await _context.SaveChangesAsync();
             return item;
         }
+        #endregion
+
+        #region Generic delete method
         public async Task<T> DeleteAsync(Guid id)
         {
             _context.Remove(id); 
@@ -28,20 +32,29 @@ namespace OtakuSect.Data.GenericRepositories
             return null;
 
         }
+        #endregion
+
+        #region Generic get all
         public async Task<IEnumerable<T>> GetAllAsync(string predicate=null)
         {
             return await _context.Set<T>().Include(predicate??predicate).ToListAsync();
         }
+        #endregion
+
+        #region Generic get by id
         public async Task<T> GetByIdAsync(Guid Id)
         {
             return await _context.Set<T>().FindAsync(Id);
         }
+        #endregion
+
+        #region Generic Update method
         public async Task<T> UpdateAsync(T t)
         {
             _context.Set<T>().Update(t);
             _context.SaveChanges();
             return t;
         }
-
+        #endregion
     }
 }

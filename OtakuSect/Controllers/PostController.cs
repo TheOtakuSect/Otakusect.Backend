@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
 using OtakuSect.ViewModel;
 using Swashbuckle.AspNetCore.Annotations;
@@ -49,6 +50,15 @@ namespace OtakuSect.Controllers
                 return Ok(result);
             }
             return BadRequest();
+        }
+
+        [SwaggerOperation(Summary="Edit the post")]
+        [HttpPut]
+        [Authorize(Roles ="SectMaster, SectElder, Disciple")]
+        public async Task<IActionResult> EditPost([FromQuery] Guid id,[FromForm]PostViewModel postViewModel)
+        {
+            var updatedPost = await _postService.EditPost(id, postViewModel);
+            return Ok(updatedPost);
         }
     }
 }

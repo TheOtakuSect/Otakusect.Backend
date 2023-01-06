@@ -16,5 +16,6 @@ namespace OtakuSect.Data
         public string FirstName { get; set; }
         public UserRole UserRole { get; set; }
         public Guid UserRoleId { get; set; }
+        public List<UserArticle> UserArticles { get; set; }
     }
 }

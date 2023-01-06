@@ -8,13 +8,17 @@ namespace OtakuSect.BussinessLayer
     {
         public readonly IAttachmentService _attachmentService;
         public readonly IPostRepository _postRepository;
-        public static ApiResponse<Post> apiResponse = new ApiResponse<Post>();
+        public static ApiResponse<Post> apiResponse = new();
 
+        #region Constructor
         public PostService(IAttachmentService attachmentService, IPostRepository postRepository)
         {
             _attachmentService = attachmentService;
             _postRepository = postRepository;
         }
+        #endregion
+
+        #region Post Content
         /// <summary>
         /// Posts Content by creating a new Post model and filling input from postViewModel
         /// </summary>
@@ -49,6 +53,9 @@ namespace OtakuSect.BussinessLayer
                 return apiResponse;
             }
         }
+        #endregion 
+
+        #region Delete Content
         /// <summary>
         /// Deletes Post through pId
         /// </summary>
@@ -58,6 +65,9 @@ namespace OtakuSect.BussinessLayer
             _postRepository.DeleteAsync(pId);
             return new ApiResponse<string>();
         }
+        #endregion
+
+        #region Get the post id
         /// <summary>
         /// Gets posts through pId
         /// </summary>
@@ -81,5 +91,50 @@ namespace OtakuSect.BussinessLayer
                 return apiResponse;
             }
         }
+        #endregion
+
+        #region Edit post region
+        /// <summary>
+        /// Edit the posts
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="postViewModel"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse<Post>> EditPost(Guid id, PostViewModel postViewModel)
+        {
+            var apiResponse = new ApiResponse<Post>();
+            try
+            {
+                var post = await _postRepository.GetByIdAsync(id);
+                post.Title= postViewModel.Title;
+                post.Description= postViewModel.Description;
+                post.IsSafeToWatch= postViewModel.IsSafeToWatch;
+                post.Tags= postViewModel.Tags;
+                var fileList = postViewModel.Files;
+                var list_attachment = new List<Attachment>();
+                foreach (var file in fileList)
+                {
+                    var attachment =  new Attachment()
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = file.FileName
+                    };
+                    list_attachment.Add(attachment);
+                }
+                await _postRepository.UpdateAsync(post);
+                apiResponse.Message = "post edited";
+                apiResponse.StatusCode = 200;
+                apiResponse.Success = true;
+                apiResponse.Data = post;
+                return apiResponse;
+            }
+            catch(Exception ex)
+            {
+                apiResponse.StatusCode = 500;
+                apiResponse.Message = ex.Message;
+                return apiResponse;
+            }
+        }
+        #endregion
     }
 }

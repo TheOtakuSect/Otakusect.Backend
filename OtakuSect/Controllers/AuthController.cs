@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
 using OtakuSect.Data.DTO;
 using OtakuSect.ViewModel;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace OtakuSect.Controllers
 {
@@ -17,6 +18,7 @@ namespace OtakuSect.Controllers
         }
 
         [HttpPost("register")]
+        [SwaggerOperation("register User")]
         [AllowAnonymous]
         public async Task<IActionResult> RegisterUser(UserViewModel user)
         {
@@ -25,6 +27,7 @@ namespace OtakuSect.Controllers
         }
 
         [HttpPost("login")]
+        [SwaggerOperation("User login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserDTO userDTO)
         {

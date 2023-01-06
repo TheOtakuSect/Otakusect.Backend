@@ -7,6 +7,7 @@ using OtakuSect.BussinessLayer;
 using OtakuSect.Data;
 using OtakuSect.Data.GenericRepositories;
 using OtakuSect.ViewModel;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 namespace OtakuSect.Controllers
 {
@@ -21,7 +22,11 @@ namespace OtakuSect.Controllers
             this.userService = userService;
             _authService = authService;
         }
+
+        #region  Update User
         [HttpPut("update")]
+        [Authorize(Roles ="SectMaster,SectElder,Disciple")]
+        [SwaggerOperation("Update Users")]
         public async Task<IActionResult> Update(UserViewModel userViewModel)
         {
             var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
@@ -32,6 +37,6 @@ namespace OtakuSect.Controllers
             }
             return Ok(result);
         }
-
+        #endregion
     }
 }

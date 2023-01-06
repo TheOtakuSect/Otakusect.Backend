@@ -65,6 +65,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(
 #endregion
 
 #region Services and Repository DI
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -72,9 +73,20 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 #endregion
 
 builder.Services.AddEndpointsApiExplorer();
+
+#region Adding Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("cors", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+#endregion
 
 #region App Build
 var app = builder.Build();
