@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using OtakuSect.BussinessLayer.Helper;
 using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
@@ -58,39 +56,24 @@ namespace OtakuSect.BussinessLayer
         /// <summary>
         /// Register new user using user:UserViewModel
         /// </summary>
-        public async Task<ApiResponse<User>> Register(UserViewModel user)
+        public async Task<RegisterViewModel> Register(UserViewModel user)
         {
             var newUser = new User()
             {
                 Id = Guid.NewGuid(),
                 UserRoleId = Guid.Parse("f5f8eda2-be15-48dc-b5e5-51008897fc34"),
-                UserName= user.UserName,
+                UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
                 Password = PasswordHasher.Password2hash(user.Password),
             };
-            var apiResponse = new ApiResponse<User>();
-            try
-            {
-                await _userRepo.AddAsync(newUser);
-                apiResponse.Success = true;
-                apiResponse.Message = "User registered Successfully.";
-                apiResponse.StatusCode = 200;
-                apiResponse.Data = newUser;
-                return apiResponse;
+            await _userRepo.AddAsync(newUser);
+            var token = await Login(user.UserName, user.Password);
 
-            }
-            catch (Exception ex)
-            {
-                apiResponse.Success = false;
-                apiResponse.Message=ex.Message;
-                apiResponse.StatusCode = 500;
-                return apiResponse;
 
-            }
+            return new RegisterViewModel { User = newUser, Token = token };
         }
-
         #region Private Methods
         /// <summary>
         /// Generates JWT token for the authentication
@@ -102,7 +85,7 @@ namespace OtakuSect.BussinessLayer
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
-            {  
+            {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
                 new Claim(ClaimTypes.Email,user.EmailAddress),
                 new Claim(ClaimTypes.Role,user.UserRole.Role),

@@ -30,7 +30,6 @@ namespace OtakuSect.Data.GenericRepositories
             _context.Remove(id); 
             await _context.SaveChangesAsync();
             return null;
-
         }
         #endregion
 
