@@ -13,10 +13,12 @@ namespace OtakuSect.BussinessLayer
     public class ArticleService : IArticleService
     {
         private readonly IArticleRepository _articleRepository;
+        private readonly IAttachmentService _attachmentService;
 
-        public ArticleService(IArticleRepository articleRepository)
+        public ArticleService(IArticleRepository articleRepository,IAttachmentService attachmentService)
         {
             _articleRepository = articleRepository;
+            _attachmentService = attachmentService;
         }
         #region Delete Article
         public ApiResponse<string> DeleteArticle(Guid id)
@@ -69,7 +71,37 @@ namespace OtakuSect.BussinessLayer
         #endregion
 
         #region Post article
-       
+        public async Task<ApiResponse<Article>> PostArticle(Guid uId, ArticleViewModel articleViewModel)
+        {
+            var apiResponse = new ApiResponse<Article>();
+            try
+            {
+                var article = new Article
+                {
+                    Id = Guid.NewGuid(),
+                    Title = articleViewModel.Title,
+                    Description = articleViewModel.Description,
+                    Attachments = _attachmentService.UploadFile(articleViewModel.Files)
+                };
+                var userArticles = new UserArticle()
+                {
+                    UserId = uId,
+                    ArticleId = article.Id,
+                };
+                await _articleRepository.AddAsync(article);
+                apiResponse.StatusCode= 200;
+                apiResponse.Success = true;
+                apiResponse.Data= article;
+                return apiResponse;
+            }
+            catch(Exception ex)
+            {
+                apiResponse.Success = false;
+                apiResponse.StatusCode= 500;
+                apiResponse.Message = ex.Message;
+                return apiResponse;
+            }
+        }
         #endregion
     }
 }

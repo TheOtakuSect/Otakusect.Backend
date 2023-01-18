@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
@@ -58,7 +59,7 @@ namespace OtakuSect.BussinessLayer
         /// <summary>
         /// Register new user using user:UserViewModel
         /// </summary>
-        public async Task<ApiResponse<User>> Register(UserViewModel user)
+        public async Task<RegisterUserTokenViewModel> Register(UserViewModel user)
         {
             var newUser = new User()
             {
@@ -70,25 +71,13 @@ namespace OtakuSect.BussinessLayer
                 EmailAddress = user.EmailAddress,
                 Password = PasswordHasher.Password2hash(user.Password),
             };
-            var apiResponse = new ApiResponse<User>();
-            try
+            await _userRepo.AddAsync(newUser);
+            var token = await Login(newUser.UserName, newUser.Password);
+            var registerToken = new RegisterUserTokenViewModel()
             {
-                await _userRepo.AddAsync(newUser);
-                apiResponse.Success = true;
-                apiResponse.Message = "User registered Successfully.";
-                apiResponse.StatusCode = 200;
-                apiResponse.Data = newUser;
-                return apiResponse;
-
-            }
-            catch (Exception ex)
-            {
-                apiResponse.Success = false;
-                apiResponse.Message=ex.Message;
-                apiResponse.StatusCode = 500;
-                return apiResponse;
-
-            }
+                UserToken =token
+            };
+            return registerToken;
         }
 
         #region Private Methods
@@ -123,7 +112,7 @@ namespace OtakuSect.BussinessLayer
         /// <returns></returns>
         private async Task<User> Authenticate(string userName, string password)
         {
-            var user = await _userRepo.GetUserNameandPassword(userName, PasswordHasher.Password2hash(password));
+            var user = await _userRepo.GetUserNameandPassword(userName, password);
             if (user != null)
             {
                 return user;

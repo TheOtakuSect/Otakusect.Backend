@@ -30,7 +30,7 @@ namespace OtakuSect.Controllers
         public async Task<IActionResult> Update(UserViewModel userViewModel)
         {
             var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var result = userService.UpdateUser(uId,userViewModel);
+            var result = await userService.UpdateUser(uId,userViewModel);
             if (result == null)
             {
                 return BadRequest(result);
