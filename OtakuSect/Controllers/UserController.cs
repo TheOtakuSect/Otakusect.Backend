@@ -27,10 +27,10 @@ namespace OtakuSect.Controllers
         [HttpPut("update")]
         [Authorize(Roles ="SectMaster,SectElder,Disciple")]
         [SwaggerOperation("Update Users")]
-        public async Task<IActionResult> Update(UserViewModel userViewModel)
+        public async Task<IActionResult> Update(UserUpdateViewModel userUpdateViewModel)
         {
             var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var result = await userService.UpdateUser(uId,userViewModel);
+            var result = await userService.UpdateUser(uId,userUpdateViewModel);
             if (result == null)
             {
                 return BadRequest(result);

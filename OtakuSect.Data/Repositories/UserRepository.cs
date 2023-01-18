@@ -8,7 +8,17 @@ namespace OtakuSect.Data.Repositories
     {
         public UserRepository(AppDbContext context) : base(context) {
         }
-            
+
+        public bool CheckUserName(string username)
+        {
+            var user = _context.Users.Any(x => x.UserName == username);
+            if (user!= null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<User> GetUserNameandPassword(string username,string password)
         {
             var current_user = await _context.Users.Include(x=>x.UserRole).FirstOrDefaultAsync(

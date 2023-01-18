@@ -18,13 +18,12 @@ namespace OtakuSect.BussinessLayer
         /// <param name="uId"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<User> UpdateUser(Guid uId, UserViewModel user)
+        public async Task<User> UpdateUser(Guid uId, UserUpdateViewModel userUpdateViewModel)
         {
             var result = await _userRepository.GetByIdAsync(uId);
-            result.EmailAddress = user.EmailAddress;
-            result.FirstName = user.FirstName;
-            result.LastName = user.LastName;
-            result.UserName = user.UserName;
+            result.EmailAddress = userUpdateViewModel.EmailAddress;
+            result.FullName = userUpdateViewModel.FullName;
+            result.UserName = userUpdateViewModel.UserName;
             await _userRepository.UpdateAsync(result);
             return result;
         }

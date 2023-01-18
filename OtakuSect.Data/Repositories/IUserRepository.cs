@@ -10,5 +10,7 @@ namespace OtakuSect.Data.Repositories
     public interface IUserRepository:IRepository<User>
     {
         public Task<User> GetUserNameandPassword(string username,string password);
+        public bool CheckUserName(string username);
+        
     }
 }

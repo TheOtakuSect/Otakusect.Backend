@@ -15,7 +15,6 @@ namespace OtakuSect.Data
         public int Upvote { get; set; }
         public int Downvote { get; set; }
         public DateTime CommentDateTime { get; set; } = DateTime.Now;
-
         public User User { get; set; }
         public Guid UserId { get; set;}
         public Post Post { get; set; }

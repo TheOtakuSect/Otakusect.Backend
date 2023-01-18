@@ -12,10 +12,12 @@ namespace OtakuSect.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
+        private readonly CheckUserService _checkUserService;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService, CheckUserService checkUserService)
         {
             _adminService = adminService;
+            _checkUserService = checkUserService;
         }
 
         [SwaggerOperation(Summary = "Change User Role to Sect Leader")]
@@ -32,6 +34,13 @@ namespace OtakuSect.Controllers
         {
             var result = _adminService.GetAllUser();
             return Ok(result);
+        }
+
+        [SwaggerOperation(Summary ="Check if user exists")]
+        [HttpPost("checkuser")]
+        public bool CheckUser(string userName)
+        {
+            return _checkUserService.CheckUser(userName);
         }
     }
 }

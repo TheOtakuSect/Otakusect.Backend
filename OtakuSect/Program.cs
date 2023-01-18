@@ -74,6 +74,9 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<CheckUserService>();
+
+
 #endregion
 
 #region Cors Ploicy

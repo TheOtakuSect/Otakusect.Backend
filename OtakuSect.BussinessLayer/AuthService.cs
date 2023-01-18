@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using OtakuSect.BussinessLayer.Helper;
 using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
@@ -59,25 +56,40 @@ namespace OtakuSect.BussinessLayer
         /// <summary>
         /// Register new user using user:UserViewModel
         /// </summary>
-        public async Task<RegisterUserTokenViewModel> Register(UserViewModel user)
+        public async Task<ApiResponse<RegisterUserTokenViewModel>> Register(UserViewModel user)
         {
-            var newUser = new User()
+            var apiResponse = new ApiResponse<RegisterUserTokenViewModel>();
+
+            if (_userRepo.CheckUserName(user.UserName) == false)
             {
-                Id = Guid.NewGuid(),
-                UserRoleId = Guid.Parse("f5f8eda2-be15-48dc-b5e5-51008897fc34"),
-                UserName= user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                EmailAddress = user.EmailAddress,
-                Password = PasswordHasher.Password2hash(user.Password),
-            };
-            await _userRepo.AddAsync(newUser);
-            var token = await Login(newUser.UserName, newUser.Password);
-            var registerToken = new RegisterUserTokenViewModel()
-            {
-                UserToken =token
-            };
-            return registerToken;
+                var unhashedPassword = user.Password;
+                var newUser = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    UserRoleId = Guid.Parse("f5f8eda2-be15-48dc-b5e5-51008897fc34"),
+                    UserName = user.UserName,
+                    FullName = user.FullName,
+                    EmailAddress = user.EmailAddress,
+                    Password = PasswordHasher.Password2hash(user.Password),
+                };
+                await _userRepo.AddAsync(newUser);
+                var token = await Login(newUser.UserName, unhashedPassword);
+                var registerToken = new RegisterUserTokenViewModel()
+                {
+                    UserToken = token
+                };
+                apiResponse.Data = registerToken;
+                apiResponse.StatusCode = 200;
+                apiResponse.Message = "Registered Successfully";
+                apiResponse.Success = true;
+            }
+            apiResponse.Data = null;
+            apiResponse.StatusCode = 409;
+            apiResponse.Message = "Already Exists";
+            apiResponse.Success = false;
+            return apiResponse;
+
+
         }
 
         #region Private Methods
@@ -91,7 +103,7 @@ namespace OtakuSect.BussinessLayer
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
-            {  
+            {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
                 new Claim(ClaimTypes.Email,user.EmailAddress),
                 new Claim(ClaimTypes.Role,user.UserRole.Role),
@@ -112,7 +124,7 @@ namespace OtakuSect.BussinessLayer
         /// <returns></returns>
         private async Task<User> Authenticate(string userName, string password)
         {
-            var user = await _userRepo.GetUserNameandPassword(userName, password);
+            var user = await _userRepo.GetUserNameandPassword(userName, PasswordHasher.Password2hash(password));
             if (user != null)
             {
                 return user;
@@ -120,5 +132,7 @@ namespace OtakuSect.BussinessLayer
             return new User();
         }
         #endregion
+
     }
 }
+

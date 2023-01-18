@@ -11,6 +11,6 @@ namespace OtakuSect.BussinessLayer
 {
     public interface IUserService
     {
-        public Task<User> UpdateUser(Guid uId,UserViewModel userViewModel);
+        public Task<User> UpdateUser(Guid uId,UserUpdateViewModel userUpdateViewModel);
     }
 }
