@@ -38,6 +38,5 @@ namespace OtakuSect.Controllers
             }
             return Ok(token);
         }
-
     }
 }

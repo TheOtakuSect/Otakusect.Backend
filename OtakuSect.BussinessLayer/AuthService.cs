@@ -96,6 +96,9 @@ namespace OtakuSect.BussinessLayer
 
         }
 
+
+
+
         #region Private Methods
         /// <summary>
         /// Generates JWT token for the authentication
