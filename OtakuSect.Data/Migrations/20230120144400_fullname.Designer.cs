@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OtakuSect.Data;
 
@@ -11,9 +12,11 @@ using OtakuSect.Data;
 namespace OtakuSect.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120144400_fullname")]
+    partial class fullname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Attachment", b =>
@@ -68,7 +71,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Attachments", (string)null);
+                    b.ToTable("Attachments");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Category", b =>
@@ -87,7 +90,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Comment", b =>
@@ -128,7 +131,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Post", b =>
@@ -165,7 +168,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Rate", b =>
@@ -189,7 +192,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Rates", (string)null);
+                    b.ToTable("Rates");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.User", b =>
@@ -225,7 +228,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserRoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.UserArticle", b =>
@@ -246,7 +249,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersArticles", (string)null);
+                    b.ToTable("UsersArticles");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.UserRole", b =>
@@ -260,7 +263,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Attachment", b =>

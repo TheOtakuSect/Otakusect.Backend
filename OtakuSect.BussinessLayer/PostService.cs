@@ -121,7 +121,7 @@ namespace OtakuSect.BussinessLayer
                     };
                     list_attachment.Add(attachment);
                 }
-                await _postRepository.UpdateAsync(post);
+                _postRepository.UpdateAsync(post);
                 apiResponse.Message = "post edited";
                 apiResponse.StatusCode = 200;
                 apiResponse.Success = true;

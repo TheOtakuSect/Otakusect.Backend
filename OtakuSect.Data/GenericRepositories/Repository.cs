@@ -1,10 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OtakuSect.Data.GenericRepositories
 {
@@ -27,7 +21,7 @@ namespace OtakuSect.Data.GenericRepositories
         #region Generic delete method
         public async Task<T> DeleteAsync(Guid id)
         {
-            _context.Remove(id); 
+            _context.Remove(id);
             await _context.SaveChangesAsync();
             return null;
 
@@ -35,9 +29,9 @@ namespace OtakuSect.Data.GenericRepositories
         #endregion
 
         #region Generic get all
-        public async Task<IEnumerable<T>> GetAllAsync(string predicate=null)
+        public async Task<IEnumerable<T>> GetAllAsync(string predicate = null)
         {
-            return await _context.Set<T>().Include(predicate??predicate).ToListAsync();
+            return await _context.Set<T>().Include(predicate ?? predicate).ToListAsync();
         }
         #endregion
 
@@ -45,15 +39,16 @@ namespace OtakuSect.Data.GenericRepositories
         public async Task<T> GetByIdAsync(Guid Id)
         {
             return await _context.Set<T>().FindAsync(Id);
+
         }
         #endregion
 
         #region Generic Update method
-        public async Task<T> UpdateAsync(T t)
+        public T UpdateAsync(T item)
         {
-            _context.Set<T>().Update(t);
+            _context.Update(item);
             _context.SaveChanges();
-            return t;
+            return item;
         }
         #endregion
     }

@@ -7,9 +7,11 @@ namespace OtakuSect.BussinessLayer
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IAttachmentService _attachmentService;
+        public UserService(IUserRepository userRepository,IAttachmentService attachmentService)
         {
             _userRepository = userRepository;
+            _attachmentService = attachmentService;
         }
        
         /// <summary>
@@ -20,12 +22,17 @@ namespace OtakuSect.BussinessLayer
         /// <returns></returns>
         public async Task<User> UpdateUser(Guid uId, UserUpdateViewModel userUpdateViewModel)
         {
-            var result = await _userRepository.GetByIdAsync(uId);
-            result.EmailAddress = userUpdateViewModel.EmailAddress;
-            result.FullName = userUpdateViewModel.FullName;
-            result.UserName = userUpdateViewModel.UserName;
-            await _userRepository.UpdateAsync(result);
-            return result;
+            var user = await _userRepository.GetByIdAsync(uId);
+            if (user == null)
+            {
+                throw new Exception("user not found");
+            }
+            user.UserName= userUpdateViewModel.UserName;
+            user.FullName= userUpdateViewModel.FullName;    
+            user.EmailAddress   = userUpdateViewModel.EmailAddress;
+            user.ProfilePic = _attachmentService.UploadProfile(userUpdateViewModel.File);
+            _userRepository.UpdateAsync(user);
+            return user;
         }
     }
 }

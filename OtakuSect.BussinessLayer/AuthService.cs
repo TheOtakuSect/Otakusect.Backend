@@ -82,12 +82,16 @@ namespace OtakuSect.BussinessLayer
                 apiResponse.StatusCode = 200;
                 apiResponse.Message = "Registered Successfully";
                 apiResponse.Success = true;
+                return apiResponse;
             }
-            apiResponse.Data = null;
-            apiResponse.StatusCode = 409;
-            apiResponse.Message = "Already Exists";
-            apiResponse.Success = false;
-            return apiResponse;
+            else
+            {
+                apiResponse.Data = null;
+                apiResponse.StatusCode = 409;
+                apiResponse.Message = "Already Exists";
+                apiResponse.Success = false;
+                return apiResponse;
+            }
 
 
         }

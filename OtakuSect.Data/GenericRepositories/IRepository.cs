@@ -10,7 +10,7 @@ namespace OtakuSect.Data.GenericRepositories
     {
          Task<IEnumerable<T>> GetAllAsync(string predicate);
          Task<T> GetByIdAsync(Guid Id);
-         Task<T> UpdateAsync( T t);
+         T UpdateAsync( T t);
          Task<T> DeleteAsync(Guid id);
          Task<T> AddAsync(T item);
     }

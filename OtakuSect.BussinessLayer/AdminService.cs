@@ -29,7 +29,7 @@ namespace OtakuSect.BussinessLayer
             try
             {
                 user.UserRoleId = Guid.Parse("b2d85906-2bb2-41e7-8d5e-85800a4d5f4e");
-                await _userRepository.UpdateAsync(user);
+                _userRepository.UpdateAsync(user);
                 apiResponse.Success = true;
                 apiResponse.Message = "user role changed";
                 apiResponse.Data = user;

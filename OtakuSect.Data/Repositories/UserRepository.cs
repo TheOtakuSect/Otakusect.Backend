@@ -12,7 +12,7 @@ namespace OtakuSect.Data.Repositories
         public bool CheckUserName(string username)
         {
             var user = _context.Users.Any(x => x.UserName == username);
-            if (user!= null)
+            if (user== true)
             {
                 return true;
             }

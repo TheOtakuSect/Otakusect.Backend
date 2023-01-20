@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OtakuSect.BussinessLayer
 {
-    public class CheckUserService : ICheckUserService
+    public class CheckUserService 
     {
         private readonly IUserRepository userRepository;
 
