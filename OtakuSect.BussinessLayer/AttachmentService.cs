@@ -33,7 +33,7 @@ namespace OtakuSect.BussinessLayer
             return list_attachment;
         }
 
-        public Attachment UploadProfile(IFormFile file)
+        public string UploadProfile(IFormFile file)
         {
             string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot/profile");
             var newGuid = Guid.NewGuid() ;
@@ -45,7 +45,7 @@ namespace OtakuSect.BussinessLayer
             string filepath = Path.Combine(directoryPath, profile.Name);
             using var stream = new FileStream(filepath, FileMode.Create);
             file.CopyTo(stream);
-            return profile;
+            return filepath;
         }
     }
 }

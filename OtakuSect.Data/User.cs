@@ -11,7 +11,6 @@
         public UserRole UserRole { get; set; }
         public Guid UserRoleId { get; set; }
         public List<UserArticle> UserArticles { get; set; }
-        public Attachment? ProfilePic { get; set; }
-        public Guid? ProfilePicId { get; set; }
+        public string? ProfilePic { get; set; }
     }
 }
