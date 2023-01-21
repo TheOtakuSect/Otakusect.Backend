@@ -1,4 +1,5 @@
-﻿using OtakuSect.Data;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
 using OtakuSect.ViewModel;
 
@@ -133,6 +134,15 @@ namespace OtakuSect.BussinessLayer
                 apiResponse.StatusCode = 500;
                 apiResponse.Message = ex.Message;
                 return apiResponse;
+            }
+        }
+
+        public IEnumerable<Post> GetAllPosts()
+        {
+            var properties = _postRepository.GetAllPosts();
+            foreach (var property in properties)
+            {
+                yield return property;
             }
         }
         #endregion

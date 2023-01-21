@@ -60,7 +60,7 @@ namespace OtakuSect.BussinessLayer
         {
             var apiResponse = new ApiResponse<RegisterUserTokenViewModel>();
 
-            if (_userRepo.CheckUserName(user.UserName) == false)
+            if (_userRepo.CheckUserName(user.UserName) == false && _userRepo.CheckEmail(user.EmailAddress) ==false)
             {
                 var unhashedPassword = user.Password;
                 var newUser = new User()

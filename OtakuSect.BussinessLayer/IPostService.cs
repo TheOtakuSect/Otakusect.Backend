@@ -1,4 +1,5 @@
-﻿using OtakuSect.Data;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OtakuSect.Data;
 using OtakuSect.ViewModel;
 
 namespace OtakuSect.BussinessLayer
@@ -9,6 +10,8 @@ namespace OtakuSect.BussinessLayer
         public ApiResponse<string> DeletePost(Guid pId);
         public Task<ApiResponse<Post>> GetPostById(Guid pId);
         public Task<ApiResponse<Post>> EditPost(Guid pId, PostViewModel postViewModel);
+        public IEnumerable<Post> GetAllPosts();
+
     }
 }
 

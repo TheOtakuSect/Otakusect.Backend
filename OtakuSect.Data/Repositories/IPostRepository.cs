@@ -1,4 +1,5 @@
-﻿using OtakuSect.Data.GenericRepositories;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OtakuSect.Data.GenericRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,7 @@ namespace OtakuSect.Data.Repositories
 {
     public interface IPostRepository: IRepository<Post>
     {
+        public IEnumerable<Post> GetAllPosts();
+
     }
 }

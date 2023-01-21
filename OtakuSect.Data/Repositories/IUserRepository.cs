@@ -11,5 +11,7 @@ namespace OtakuSect.Data.Repositories
     {
         public Task<User> GetUserNameandPassword(string username,string password);
         public bool CheckUserName(string username);
+        public bool CheckEmail(string email);
+
     }
 }

@@ -60,5 +60,13 @@ namespace OtakuSect.Controllers
             var updatedPost = await _postService.EditPost(id, postViewModel);
             return Ok(updatedPost);
         }
+
+        [SwaggerOperation(Summary = "get all the post")]
+        [HttpGet("getallposts")]
+        public IActionResult GetAllPosts()
+        {
+            var allPosts = _postService.GetAllPosts();
+            return Ok(allPosts);
+        }
     }
 }

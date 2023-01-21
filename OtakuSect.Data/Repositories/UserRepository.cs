@@ -18,6 +18,16 @@ namespace OtakuSect.Data.Repositories
             }
             return false;
         }
+        public bool CheckEmail(string email)
+        {
+            var user = _context.Users.Any(x => x.EmailAddress == email);
+            if (user == true)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public async Task<User> GetUserNameandPassword(string username,string password)
         {
