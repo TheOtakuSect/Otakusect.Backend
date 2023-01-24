@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OtakuSect.BussinessLayer.Helper;
 using OtakuSect.Data;
@@ -14,11 +15,13 @@ namespace OtakuSect.BussinessLayer
     {
         private readonly IConfiguration _config;
         private readonly IUserRepository _userRepo;
+        private readonly IMapper _mapper;
 
-        public AuthService(IConfiguration config, IUserRepository userRepo)
+        public AuthService(IConfiguration config, IUserRepository userRepo,IMapper mapper)
         {
             _config = config;
             _userRepo = userRepo;
+            _mapper = mapper;
         }
 
         /// <summary>

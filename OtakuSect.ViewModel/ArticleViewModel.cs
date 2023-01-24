@@ -11,7 +11,6 @@ namespace OtakuSect.ViewModel
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public int ViewCount { get; set; }
         public List<IFormFile> Files { get; set; }
 
     }

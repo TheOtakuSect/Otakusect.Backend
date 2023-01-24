@@ -75,7 +75,7 @@ builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<CheckUserService>();
-
+builder.Services.AddAutoMapper(typeof(Program));
 
 #endregion
 

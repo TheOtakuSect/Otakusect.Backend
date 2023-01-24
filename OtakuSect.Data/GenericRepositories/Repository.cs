@@ -12,9 +12,18 @@ namespace OtakuSect.Data.GenericRepositories
         #region Generic add method
         public async Task<T> AddAsync(T item)
         {
-            await _context.Set<T>().AddAsync(item);
-            await _context.SaveChangesAsync();
-            return item;
+            try
+            {
+
+                await _context.Set<T>().AddAsync(item);
+                await _context.SaveChangesAsync();
+                return item;
+            }
+            catch (Exception ex)
+            {
+                string message = ex.ToString();
+                return null;
+            }
         }
         #endregion
 

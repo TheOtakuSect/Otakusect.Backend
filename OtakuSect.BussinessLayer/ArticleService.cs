@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.SignalR;
 using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
 using OtakuSect.ViewModel;
@@ -83,11 +84,9 @@ namespace OtakuSect.BussinessLayer
                     Description = articleViewModel.Description,
                     Attachments = _attachmentService.UploadFile(articleViewModel.Files)
                 };
-                var userArticles = new UserArticle()
-                {
-                    UserId = uId,
-                    ArticleId = article.Id,
-                };
+                var userArticles = new UserArticle();
+                userArticles.UserId = uId;
+                userArticles.ArticleId = article.Id;
                 await _articleRepository.AddAsync(article);
                 apiResponse.StatusCode= 200;
                 apiResponse.Success = true;
@@ -103,5 +102,35 @@ namespace OtakuSect.BussinessLayer
             }
         }
         #endregion
+
+        #region edit Article
+        public async Task<ApiResponse<Article>> UpdateArticle(Guid userId, Guid id, ArticleViewModel articleViewModel)
+        {
+            var apiResponse = new ApiResponse<Article>();
+            try
+            {
+                var article = await _articleRepository.GetByIdAsync(id);
+                article.Title = articleViewModel.Title;
+                article.Description = articleViewModel.Description;
+                article.Attachments = _attachmentService.UploadFile(articleViewModel.Files);
+                var userArticles = new UserArticle();
+                userArticles.UserId = userId;
+                userArticles.ArticleId = article.Id;
+                _articleRepository.UpdateAsync(article);
+                apiResponse.StatusCode= 200;
+                apiResponse.Success = true;
+                apiResponse.Data= article;
+                return apiResponse;
+            }
+            catch(Exception ex)
+            {
+                apiResponse.Success = false;
+                apiResponse.StatusCode= 500;
+                apiResponse.Message= ex.Message;
+                return apiResponse;
+            }
+        }
+        #endregion
+
     }
 }

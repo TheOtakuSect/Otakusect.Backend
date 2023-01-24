@@ -9,5 +9,7 @@ namespace OtakuSect.Data.Repositories
 {
     public interface IArticleRepository : IRepository<Article>
     {
+        public Task<Article> GetAllArticles();
+
     }
 }

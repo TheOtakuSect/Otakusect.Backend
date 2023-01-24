@@ -28,5 +28,15 @@ namespace OtakuSect.Controllers
             return Ok(result);
         }
         #endregion
+
+        #region update article 
+        [HttpPost("edit-article/{id}")]
+        public async Task<IActionResult> UpdateArticle(Guid id,[FromForm] ArticleViewModel articleViewModel)
+        {
+            var userid = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = await _articleService.UpdateArticle(userid,id, articleViewModel);
+            return Ok(result);
+        }
+        #endregion
     }
 }
