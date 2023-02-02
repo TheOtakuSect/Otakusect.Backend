@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
 using Swashbuckle.AspNetCore.Annotations;
@@ -22,7 +21,7 @@ namespace OtakuSect.Controllers
 
         [SwaggerOperation(Summary = "Change User Role to Sect Leader")]
         [HttpPost("user/role")]
-        public IActionResult ChangeUserRole([FromQuery]Guid id)
+        public IActionResult ChangeUserRole([FromQuery] Guid id)
         {
             var result = _adminService.ChangeRole(id);
             return Ok(result);
@@ -36,7 +35,7 @@ namespace OtakuSect.Controllers
             return Ok(result);
         }
 
-        [SwaggerOperation(Summary ="Check if user exists")]
+        [SwaggerOperation(Summary = "Check if user exists")]
         [HttpPost("checkuser")]
         public bool CheckUser(string userName)
         {

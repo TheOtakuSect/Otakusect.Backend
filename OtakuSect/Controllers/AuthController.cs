@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
 using OtakuSect.Data.DTO;
-using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace OtakuSect.Controllers

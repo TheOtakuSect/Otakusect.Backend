@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
-using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 

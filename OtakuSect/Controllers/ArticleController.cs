@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OtakuSect.BussinessLayer;
-using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
 using System.Security.Claims;
 
 namespace OtakuSect.Controllers
@@ -31,6 +32,7 @@ namespace OtakuSect.Controllers
 
         #region update article 
         [HttpPost("edit-article/{id}")]
+        [Authorize("SectElder")]
         public async Task<IActionResult> UpdateArticle(Guid id,[FromForm] ArticleViewModel articleViewModel)
         {
             var userid = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
@@ -38,5 +40,16 @@ namespace OtakuSect.Controllers
             return Ok(result);
         }
         #endregion
+
+
+        #region Get all article 
+        [HttpGet]
+        public IActionResult GetAllArticle()
+        {
+            var result =_articleService.GetAllArticle();
+            return Ok(result);
+        }
+        #endregion
+
     }
 }

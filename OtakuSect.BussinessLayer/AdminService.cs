@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using OtakuSect.Data;
+﻿using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OtakuSect.BussinessLayer
 {
@@ -15,7 +8,7 @@ namespace OtakuSect.BussinessLayer
         private readonly IUserRepository _userRepository;
         public AdminService(IUserRepository userRepository)
         {
-            _userRepository= userRepository;
+            _userRepository = userRepository;
         }
         /// <summary>
         /// change the user role from disciple to SectElder
@@ -39,7 +32,7 @@ namespace OtakuSect.BussinessLayer
             {
                 apiResponse.Success = false;
                 apiResponse.Message = ex.Message;
-                apiResponse.StatusCode= 500;
+                apiResponse.StatusCode = 500;
                 apiResponse.Data = null;
                 return apiResponse;
             }
@@ -51,7 +44,7 @@ namespace OtakuSect.BussinessLayer
         public async IAsyncEnumerable<User> GetAllUser()
         {
             var users = await _userRepository.GetAllAsync("UserRole");
-           
+
             foreach (var user in users)
             {
                 yield return user;

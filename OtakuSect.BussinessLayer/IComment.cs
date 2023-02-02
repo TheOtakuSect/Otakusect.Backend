@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OtakuSect.ViewModel
+namespace OtakuSect.BussinessLayer
 {
-    public class RegisterUserTokenViewModel
+    public interface IComment
     {
-        public string UserToken { get; set; }
     }
 }

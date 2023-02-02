@@ -1,4 +1,6 @@
 ﻿using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
+using OtakuSect.ViewModel.Response;
 using System.Security.Claims;
 
 namespace OtakuSect.BussinessLayer

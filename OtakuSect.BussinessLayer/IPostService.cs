@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OtakuSect.Data;
-using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
 
 namespace OtakuSect.BussinessLayer
 {

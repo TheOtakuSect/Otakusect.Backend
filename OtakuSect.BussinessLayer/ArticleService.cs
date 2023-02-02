@@ -1,13 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.SignalR;
-using OtakuSect.Data;
+﻿using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
-using OtakuSect.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OtakuSect.ViewModel.Request;
 
 namespace OtakuSect.BussinessLayer
 {
@@ -16,7 +9,7 @@ namespace OtakuSect.BussinessLayer
         private readonly IArticleRepository _articleRepository;
         private readonly IAttachmentService _attachmentService;
 
-        public ArticleService(IArticleRepository articleRepository,IAttachmentService attachmentService)
+        public ArticleService(IArticleRepository articleRepository, IAttachmentService attachmentService)
         {
             _articleRepository = articleRepository;
             _attachmentService = attachmentService;
@@ -29,22 +22,24 @@ namespace OtakuSect.BussinessLayer
             {
                 _articleRepository.DeleteAsync(id);
                 apiResponse.Success = true;
-                apiResponse.StatusCode= 200;
+                apiResponse.StatusCode = 200;
                 apiResponse.Message = "Article deleted";
                 return apiResponse;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.StatusCode= 500;
+                apiResponse.StatusCode = 500;
                 apiResponse.Message = ex.Message;
                 return apiResponse;
             }
         }
-
-        public Task<ApiResponse<Article>> EditArticle(Guid id, ArticleViewModel articleViewModel)
+        #endregion
+        #region Get all article
+        public IEnumerable<Article> GetAllArticle()
         {
-            throw new NotImplementedException();
+            var result = _articleRepository.GetAllArticles();
+            return result;
         }
         #endregion
 
@@ -56,15 +51,15 @@ namespace OtakuSect.BussinessLayer
             try
             {
                 var article = await _articleRepository.GetByIdAsync(id);
-                apiResponse.StatusCode= 200;
+                apiResponse.StatusCode = 200;
                 apiResponse.Success = true;
-                apiResponse.Data= article;
+                apiResponse.Data = article;
                 return apiResponse;
             }
-            catch(Exception ex) 
-            { 
+            catch (Exception ex)
+            {
                 apiResponse.Success = false;
-                apiResponse.StatusCode= 500;
+                apiResponse.StatusCode = 500;
                 apiResponse.Message = ex.Message;
                 return apiResponse;
             }
@@ -88,15 +83,15 @@ namespace OtakuSect.BussinessLayer
                 userArticles.UserId = uId;
                 userArticles.ArticleId = article.Id;
                 await _articleRepository.AddAsync(article);
-                apiResponse.StatusCode= 200;
+                apiResponse.StatusCode = 200;
                 apiResponse.Success = true;
-                apiResponse.Data= article;
+                apiResponse.Data = article;
                 return apiResponse;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.StatusCode= 500;
+                apiResponse.StatusCode = 500;
                 apiResponse.Message = ex.Message;
                 return apiResponse;
             }
@@ -117,20 +112,19 @@ namespace OtakuSect.BussinessLayer
                 userArticles.UserId = userId;
                 userArticles.ArticleId = article.Id;
                 _articleRepository.UpdateAsync(article);
-                apiResponse.StatusCode= 200;
+                apiResponse.StatusCode = 200;
                 apiResponse.Success = true;
-                apiResponse.Data= article;
+                apiResponse.Data = article;
                 return apiResponse;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 apiResponse.Success = false;
-                apiResponse.StatusCode= 500;
-                apiResponse.Message= ex.Message;
+                apiResponse.StatusCode = 500;
+                apiResponse.Message = ex.Message;
                 return apiResponse;
             }
+            #endregion
         }
-        #endregion
-
     }
 }

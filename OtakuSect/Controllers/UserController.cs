@@ -6,7 +6,7 @@ using Microsoft.Identity.Client;
 using OtakuSect.BussinessLayer;
 using OtakuSect.Data;
 using OtakuSect.Data.GenericRepositories;
-using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 namespace OtakuSect.Controllers

@@ -5,6 +5,8 @@ using OtakuSect.BussinessLayer.Helper;
 using OtakuSect.Data;
 using OtakuSect.Data.Repositories;
 using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
+using OtakuSect.ViewModel.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

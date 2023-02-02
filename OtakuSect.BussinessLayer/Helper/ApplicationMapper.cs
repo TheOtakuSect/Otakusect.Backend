@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using OtakuSect.Data;
-using OtakuSect.ViewModel;
+using OtakuSect.ViewModel.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
