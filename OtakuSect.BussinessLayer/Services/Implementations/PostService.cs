@@ -47,17 +47,18 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
             }
         }
 
-        public ApiResponse<PostResponse> PostContent(Guid userId, PostRequest PostRequest)
+        public ApiResponse<PostResponse> PostContent(Guid userId, PostRequest postRequest)
         {
             try
             {
                 var post = new Post()
                 {
                     Id = Guid.NewGuid(),
-                    Title = PostRequest.Title,
-                    Description = PostRequest.Description,
-                    Attachments = PostRequest.Files?.Count > 0 ? _attachmentService.UploadFile(PostRequest.Files) : new List<Attachment>(),
-                    IsSafeToWatch = PostRequest.IsSafeToWatch,
+                    Title = postRequest.Title,
+                    Description = postRequest.Description,
+                    Tags= postRequest.Tags,
+                    Attachments = postRequest.Files?.Count > 0 ? _attachmentService.UploadFile(postRequest.Files) : new List<Attachment>(),
+                    IsSafeToWatch = postRequest.IsSafeToWatch,
                     UserId = userId
                 };
                 _postRepo.AddAsync(post);
@@ -66,14 +67,21 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
             }
             catch (Exception ex)
             {
-                return ResponseCreater<PostResponse>.CreateSuccessResponse(null, ex.ToString());
+                return ResponseCreater<PostResponse>.CreateErrorResponse(null, ex.ToString());
             }
         }
 
         public ApiResponse<string> DeletePost(Guid pId)
         {
-            _postRepo.DeleteAsync(pId);
-            return new ApiResponse<string>();
+            try
+            {
+                _postRepo.DeleteAsync(pId);
+                return ResponseCreater<string>.CreateSuccessResponse("deleted", "Post deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseCreater<string>.CreateErrorResponse(null, ex.ToString());
+            }
         }
 
         public async Task<ApiResponse<PostResponse>> EditPost(PostUpdateRequest postRequest)

@@ -30,11 +30,11 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
             }
         }
 
-        public async Task<ApiResponse<UserResponse>> UpdateUser(UserUpdateRequest userUpdateRequest)
+        public async Task<ApiResponse<UserResponse>> UpdateUser(Guid userId,UserUpdateRequest userUpdateRequest)
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(userUpdateRequest.Id);
+                var user = await _userRepository.GetByIdAsync(userId);
                 if (user == null)
                 {
                     return ResponseCreater<UserResponse>.CreateNotFoundResponse(null, "User not found");
@@ -42,7 +42,7 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
                 user.UserName = userUpdateRequest.UserName;
                 user.FullName = userUpdateRequest.FullName;
                 user.EmailAddress = userUpdateRequest.EmailAddress;
-                user.ProfilePic = _attachmentService.UploadProfile(userUpdateRequest.File);
+                user.ProfilePic = userUpdateRequest.File!=null?_attachmentService.UploadProfile(userUpdateRequest.File):user.ProfilePic;
                 _userRepository.UpdateAsync(user);
 
                 var response = UserTransformer.GetUserResponseFromUser(user);

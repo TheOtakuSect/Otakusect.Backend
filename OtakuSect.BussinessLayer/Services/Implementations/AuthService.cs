@@ -48,7 +48,7 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
                 if (user != null)
                 {
                     var token = GenerateToken(user);
-                    return ResponseCreater<string>.CreateSuccessResponse(token, "User Found.");
+                    return ResponseCreater<string>.CreateSuccessResponse(token, "User login found.");
                 }
                 else
                 {
@@ -79,8 +79,11 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
                         Password = PasswordHasher.Password2hash(user.Password),
                     };
                     await _userRepo.AddAsync(newUser);
-                    newUser.UserRole.Id = Guid.Parse(Constants.DiscipleRoleId);
-                    newUser.UserRole.Role = Constants.DiscipleRoleName;
+                    newUser.UserRole = new UserRole()
+                    {
+                        Id = Guid.Parse(Constants.DiscipleRoleId),
+                        Role = Constants.DiscipleRoleName
+                    };
                     var token = GenerateToken(newUser);
                     return ResponseCreater<string>.CreateSuccessResponse(token, "User registered successfully");
                 }
@@ -115,7 +118,7 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(2880),
+                expires: DateTime.Now.AddDays(30),
                 signingCredentials: credentials);
             var encodedJWT = new JwtSecurityTokenHandler().WriteToken(token);
             return encodedJWT;

@@ -13,7 +13,7 @@ namespace OtakuSect.BussinessLayer.Transformers
                 var users = new List<ArticleUser>();
                 article.UserArticles?.ForEach((user) =>
                 {
-                    users.Add(new ArticleUser { Id = user.UserId, UserName = user.User.UserName });
+                    users.Add(new ArticleUser { Id = user.UserId, UserName = user.User?.UserName });
                 });
                 var articleResponse = new ArticleResponse()
                 {

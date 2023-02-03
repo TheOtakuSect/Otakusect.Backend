@@ -20,17 +20,12 @@ namespace OtakuSect.Data.GenericRepositories
             {
                 query = query.Include(include);
             }
-            return await query.ToListAsync();
+            return await query.ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<T> GetByIdAsync(Guid Id, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetByIdAsync(Guid Id)
         {
-            IQueryable<T> query = (IQueryable<T>)await _context.Set<T>().FindAsync(Id);
-            foreach (Expression<Func<T, object>> include in includes)
-            {
-                query = query.Include(include);
-            }
-            return await query.FirstOrDefaultAsync();
+            return await _context.Set<T>().FindAsync(Id);
         }
 
         public async Task<T> AddAsync(T item)

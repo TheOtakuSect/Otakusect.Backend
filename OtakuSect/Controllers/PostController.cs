@@ -21,9 +21,9 @@ namespace OtakuSect.Controllers
 
         [HttpGet("all")]
         [SwaggerOperation(Summary = "Get all post, visible to all")]
-        public IActionResult GetAllPosts()
+        public async Task<IActionResult> GetAllPosts()
         {
-            var allPosts = _postService.GetAllPosts();
+            var allPosts =await _postService.GetAllPosts();
             return Ok(allPosts);
         }
 

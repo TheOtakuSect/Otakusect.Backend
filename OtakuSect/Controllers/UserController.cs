@@ -18,9 +18,9 @@ namespace OtakuSect.Controllers
             _authService = authService;
         }
 
-        [HttpPost("checkuser")]
+        [HttpGet("checkuser")]
         [SwaggerOperation(Summary = "Check if user exists")]
-        public IActionResult CheckUser(string userName)
+        public IActionResult CheckUser([FromQuery] string userName)
         {
             return Ok(_userService.CheckUser(userName));
         }
@@ -30,8 +30,8 @@ namespace OtakuSect.Controllers
         [SwaggerOperation(Summary = "Update Users")]
         public async Task<IActionResult> Update([FromForm] UserUpdateRequest userUpdateRequest)
         {
-            userUpdateRequest.Id = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var result = await _userService.UpdateUser(userUpdateRequest);
+           var userId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = await _userService.UpdateUser(userId,userUpdateRequest);
             return Ok(result);
         }
     }

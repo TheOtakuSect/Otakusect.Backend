@@ -30,7 +30,7 @@ namespace OtakuSect.BussinessLayer.Transformers
                 Email = user.EmailAddress,
                 ProfilePic = user.ProfilePic,
                 FullName = user.FullName,
-                Role = user.UserRole.Role,
+                Role = user.UserRole?.Role,
             };
             return userResponse;
         }

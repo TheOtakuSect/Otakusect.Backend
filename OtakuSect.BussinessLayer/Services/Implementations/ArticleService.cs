@@ -23,7 +23,7 @@ namespace OtakuSect.BussinessLayer
         {
             try
             {
-                var result = await _articleRepo.GetAllAsync(x => x.Attachments, x => x.Categories);
+                var result = await _articleRepo.GetAllAsync(x => x.Attachments, x => x.Categories,x=>x.UserArticles);
                 var response = ArticleTransformer.GetArticleResponseFromArticle(result.ToList());
                 return ResponseCreater<List<ArticleResponse>>.CreateSuccessResponse(response, "Articles loaded successfully.");
             }
@@ -56,7 +56,7 @@ namespace OtakuSect.BussinessLayer
                     Id = Guid.NewGuid(),
                     Title = articleRequest.Title,
                     Description = articleRequest.Description,
-                    Attachments = articleRequest.Files.Count > 0 ? _attachmentService.UploadFile(articleRequest.Files) : new List<Attachment>()
+                    Attachments = articleRequest.Files?.Count > 0 ? _attachmentService.UploadFile(articleRequest.Files) : new List<Attachment>()
                 };
                 var userArticle = new UserArticle
                 {
@@ -81,8 +81,8 @@ namespace OtakuSect.BussinessLayer
                 var article = await _articleRepo.GetByIdAsync(articleRequest.Id);
                 article.Title = articleRequest.Title;
                 article.Description = articleRequest.Description;
-                article.Attachments = _attachmentService.UploadFile(articleRequest.Files);
-                article.UserArticles.Add(new UserArticle
+                article.Attachments = articleRequest.Files?.Count > 0 ? _attachmentService.UploadFile(articleRequest.Files) : new List<Attachment>();
+                article.UserArticles?.Add(new UserArticle
                 {
                     UserId = userId,
                     ArticleId = article.Id
