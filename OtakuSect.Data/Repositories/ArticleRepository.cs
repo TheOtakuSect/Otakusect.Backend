@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OtakuSect.Data.Context;
+using OtakuSect.Data.Entities;
 using OtakuSect.Data.GenericRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OtakuSect.Data.Repositories
 {
@@ -28,9 +25,15 @@ namespace OtakuSect.Data.Repositories
                     {
                         UserId = ua.UserId
                     }).ToList()
-                    });
+                });
             return articles;
-                
+        }
+
+        public async Task<UserArticle> PostWithUser(UserArticle userArticle)
+        {
+            await _context.UsersArticles.AddAsync(userArticle);
+            _context.SaveChanges();
+            return userArticle;
         }
     }
 }

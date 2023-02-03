@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OtakuSect.BussinessLayer;
+using OtakuSect.BussinessLayer.Services.Interface;
 using OtakuSect.ViewModel.Request;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
@@ -19,17 +19,16 @@ namespace OtakuSect.Controllers
             _authService = authService;
         }
 
-        [SwaggerOperation(Summary = "Save Post in database")]
-        [HttpPost]
-        public IActionResult PostContent([FromForm] PostViewModel postViewModel)
+        [HttpGet("all")]
+        [SwaggerOperation(Summary = "Get all post, visible to all")]
+        public IActionResult GetAllPosts()
         {
-            var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var post = _postService.PostContent(uId, postViewModel);
-            return Ok(post);
+            var allPosts = _postService.GetAllPosts();
+            return Ok(allPosts);
         }
 
-        [SwaggerOperation(Summary = "Get Post by Id")]
         [HttpGet]
+        [SwaggerOperation(Summary = "Get post by Id")]
         public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             var result = await _postService.GetPostById(id);
@@ -40,8 +39,28 @@ namespace OtakuSect.Controllers
             return BadRequest();
         }
 
-        [SwaggerOperation(Summary = "Delete Post by Id")]
+        [HttpPost]
+        [Authorize]
+        [SwaggerOperation(Summary = "Save post in database")]
+        public IActionResult PostContent([FromForm] PostRequest PostRequest)
+        {
+            var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var post = _postService.PostContent(uId, PostRequest);
+            return Ok(post);
+        }
+
+        [HttpPut]
+        [Authorize]
+        [SwaggerOperation(Summary = "Edit post")]
+        public async Task<IActionResult> EditPost([FromForm] PostUpdateRequest PostRequest)
+        {
+            var updatedPost = await _postService.EditPost(PostRequest);
+            return Ok(updatedPost);
+        }
+
         [HttpDelete]
+        [Authorize]
+        [SwaggerOperation(Summary = "Delete post by Id")]
         public IActionResult DeleteById([FromQuery] Guid id)
         {
             var result = _postService.DeletePost(id);
@@ -50,23 +69,6 @@ namespace OtakuSect.Controllers
                 return Ok(result);
             }
             return BadRequest();
-        }
-
-        [SwaggerOperation(Summary="Edit the post")]
-        [HttpPut]
-        [Authorize(Roles ="SectMaster, SectElder, Disciple")]
-        public async Task<IActionResult> EditPost([FromQuery] Guid id,[FromForm]PostViewModel postViewModel)
-        {
-            var updatedPost = await _postService.EditPost(id, postViewModel);
-            return Ok(updatedPost);
-        }
-
-        [SwaggerOperation(Summary = "get all the post")]
-        [HttpGet("getallposts")]
-        public IActionResult GetAllPosts()
-        {
-            var allPosts = _postService.GetAllPosts();
-            return Ok(allPosts);
         }
     }
 }

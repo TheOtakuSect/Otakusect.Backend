@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OtakuSect.BussinessLayer;
-using OtakuSect.Data;
+using OtakuSect.BussinessLayer.Services.Implementations;
+using OtakuSect.BussinessLayer.Services.Interface;
+using OtakuSect.Data.Context;
 using OtakuSect.Data.Repositories;
 using System.Text;
 
@@ -13,15 +15,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen(s =>
 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 {
-    In = ParameterLocation.Header,
+    In = ParameterLocation.Path,
     Description = "Insert JWT Token",
     Name = "Authorization",
     Type = SecuritySchemeType.Http,
     BearerFormat = "JWT",
     Scheme = "bearer"
 }));
-builder.Services.AddSwaggerGen(w =>
-w.AddSecurityRequirement(new OpenApiSecurityRequirement
+builder.Services.AddSwaggerGen(x =>
+{
+    x.DescribeAllParametersInCamelCase();
+    x.EnableAnnotations();
+    x.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -34,8 +39,9 @@ w.AddSecurityRequirement(new OpenApiSecurityRequirement
         },
          new string[]{ }
     } }
-    ));
-builder.Services.AddSwaggerGen(c => c.EnableAnnotations());
+    );
+});
+
 #endregion
 
 #region DB Context
@@ -74,9 +80,6 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
-builder.Services.AddScoped<CheckUserService>();
-builder.Services.AddAutoMapper(typeof(Program));
-
 #endregion
 
 #region Cors Ploicy

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OtakuSect.Data.Context;
+using System.Linq.Expressions;
 
 namespace OtakuSect.Data.GenericRepositories
 {
@@ -9,7 +11,28 @@ namespace OtakuSect.Data.GenericRepositories
         {
             _context = context;
         }
-        #region Generic add method
+
+        #region Methods
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            foreach (Expression<Func<T, object>> include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetByIdAsync(Guid Id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = (IQueryable<T>)await _context.Set<T>().FindAsync(Id);
+            foreach (Expression<Func<T, object>> include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<T> AddAsync(T item)
         {
             try
@@ -25,38 +48,19 @@ namespace OtakuSect.Data.GenericRepositories
                 return null;
             }
         }
-        #endregion
 
-        #region Generic delete method
-        public async Task<T> DeleteAsync(Guid id)
-        {
-            _context.Remove(id);
-            await _context.SaveChangesAsync();
-            return null;
-        }
-        #endregion
-
-        #region Generic get all
-        public async Task<IEnumerable<T>> GetAllAsync(string predicate = null)
-        {
-            return await _context.Set<T>().Include(predicate ?? predicate).ToListAsync();
-        }
-        #endregion
-
-        #region Generic get by id
-        public async Task<T> GetByIdAsync(Guid Id)
-        {
-            return await _context.Set<T>().FindAsync(Id);
-
-        }
-        #endregion
-
-        #region Generic Update method
         public T UpdateAsync(T item)
         {
             _context.Update(item);
             _context.SaveChanges();
             return item;
+        }
+
+        public async Task<T> DeleteAsync(Guid id)
+        {
+            _context.Remove(id);
+            await _context.SaveChangesAsync();
+            return null;
         }
         #endregion
     }
