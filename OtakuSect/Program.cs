@@ -116,6 +116,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseStaticFiles();
 app.UseCors("OtakuCORS");
 app.Run();
 #endregion
