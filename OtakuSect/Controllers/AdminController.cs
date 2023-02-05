@@ -19,7 +19,7 @@ namespace OtakuSect.Controllers
         }
 
         [HttpPost("user/role")]
-        [SwaggerOperation(Summary = "Change user role to sect leader")]
+        [SwaggerOperation(Summary = "Change User Role to Sect Eeader")]
         public IActionResult ChangeUserRole([FromQuery] Guid id)
         {
             var result = _adminService.ChangeRole(id);
