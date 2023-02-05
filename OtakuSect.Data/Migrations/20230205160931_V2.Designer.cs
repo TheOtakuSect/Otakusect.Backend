@@ -12,8 +12,8 @@ using OtakuSect.Data;
 namespace OtakuSect.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230106101444_userarticle_table")]
-    partial class userarticletable
+    [Migration("20230205160931_V2")]
+    partial class V2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,9 @@ namespace OtakuSect.Data.Migrations
                     b.Property<Guid?>("PostId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
@@ -70,6 +73,8 @@ namespace OtakuSect.Data.Migrations
                     b.HasIndex("CommentId");
 
                     b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Attachments");
                 });
@@ -201,16 +206,19 @@ namespace OtakuSect.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePic")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -275,11 +283,17 @@ namespace OtakuSect.Data.Migrations
                         .WithMany("Attachments")
                         .HasForeignKey("PostId");
 
+                    b.HasOne("OtakuSect.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Article");
 
                     b.Navigation("Comment");
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Category", b =>
