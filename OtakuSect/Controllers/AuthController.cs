@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OtakuSect.BussinessLayer;
-using OtakuSect.Data.DTO;
-using OtakuSect.ViewModel;
+using OtakuSect.BussinessLayer.Services.Interface;
+using OtakuSect.ViewModel.Request;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace OtakuSect.Controllers
@@ -18,26 +17,25 @@ namespace OtakuSect.Controllers
         }
 
         [HttpPost("register")]
-        [SwaggerOperation("register User")]
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterUser(UserViewModel user)
+        [SwaggerOperation(Summary = "Register user as disciple")]
+        public async Task<IActionResult> RegisterUser(UserRegisterRequest user)
         {
-            var result =await _authService.Register(user);
+            var result = await _authService.Register(user);
             return Ok(result);
         }
 
         [HttpPost("login")]
-        [SwaggerOperation("User login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] UserDTO userDTO)
+        [SwaggerOperation(Summary = "User login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest loginRequest)
         {
-            var token = await _authService.Login(userDTO.UserName, userDTO.Password);
+            var token = await _authService.Login(loginRequest.UserName, loginRequest.Password);
             if (token == null)
             {
                 return NotFound("User not found");
             }
             return Ok(token);
         }
-
     }
 }

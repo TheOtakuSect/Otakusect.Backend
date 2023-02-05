@@ -1,13 +1,10 @@
-﻿using OtakuSect.Data.GenericRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OtakuSect.Data.Entities;
+using OtakuSect.Data.GenericRepositories;
 
 namespace OtakuSect.Data.Repositories
 {
-    public interface IPostRepository: IRepository<Post>
+    public interface IPostRepository : IRepository<Post>
     {
+
     }
 }
