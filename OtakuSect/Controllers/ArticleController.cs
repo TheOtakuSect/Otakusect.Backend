@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OtakuSect.BussinessLayer;
+using OtakuSect.BussinessLayer.Services.Interface;
 using OtakuSect.ViewModel.Request;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 
 namespace OtakuSect.Controllers
@@ -14,42 +14,38 @@ namespace OtakuSect.Controllers
         private readonly IArticleService _articleService;
         private readonly IAuthService _authService;
 
-        public ArticleController(IArticleService articleService,IAuthService authService)
+        public ArticleController(IArticleService articleService, IAuthService authService)
         {
             _articleService = articleService;
             _authService = authService;
         }
 
-        #region Post article 
-        [HttpPost]
-        public async Task<IActionResult> PostArticle([FromForm]ArticleViewModel articleViewModel )
-        {
-            var userid = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var result =  await _articleService.PostArticle(userid, articleViewModel);
-            return Ok(result);
-        }
-        #endregion
-
-        #region update article 
-        [HttpPost("edit-article/{id}")]
-        [Authorize("SectElder")]
-        public async Task<IActionResult> UpdateArticle(Guid id,[FromForm] ArticleViewModel articleViewModel)
-        {
-            var userid = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var result = await _articleService.UpdateArticle(userid,id, articleViewModel);
-            return Ok(result);
-        }
-        #endregion
-
-
-        #region Get all article 
         [HttpGet]
-        public IActionResult GetAllArticle()
+        [SwaggerOperation(Summary = "Get all articles, visible to every users")]
+        public async Task<IActionResult> GetAllArticle()
         {
-            var result =_articleService.GetAllArticle();
+            var result = await _articleService.GetAllArticle();
             return Ok(result);
         }
-        #endregion
 
+        [HttpPost]
+        [Authorize]
+        [SwaggerOperation(Summary = "Post article to database")]
+        public async Task<IActionResult> PostArticle([FromForm] ArticleRequest articleRequest)
+        {
+            var userId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = await _articleService.PostArticle(userId, articleRequest);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Authorize]
+        [SwaggerOperation(Summary = "Edit article")]
+        public async Task<IActionResult> UpdateArticle([FromForm] ArticleUpdateRequest ArticleRequest)
+        {
+            var userId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = await _articleService.UpdateArticle(userId, ArticleRequest);
+            return Ok(result);
+        }
     }
 }

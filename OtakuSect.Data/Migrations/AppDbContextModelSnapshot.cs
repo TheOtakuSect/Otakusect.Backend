@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OtakuSect.Data;
+using OtakuSect.Data.Context;
 
 #nullable disable
 
@@ -39,7 +39,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Attachment", b =>
@@ -60,9 +60,6 @@ namespace OtakuSect.Data.Migrations
                     b.Property<Guid?>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
@@ -71,9 +68,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Attachments");
+                    b.ToTable("Attachments", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Category", b =>
@@ -92,7 +87,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Comment", b =>
@@ -133,7 +128,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Post", b =>
@@ -170,7 +165,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Rate", b =>
@@ -194,7 +189,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Rates");
+                    b.ToTable("Rates", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.User", b =>
@@ -215,8 +210,8 @@ namespace OtakuSect.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfilePic")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("ProfilePicId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
@@ -226,9 +221,11 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProfilePicId");
+
                     b.HasIndex("UserRoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.UserArticle", b =>
@@ -249,7 +246,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersArticles");
+                    b.ToTable("UsersArticles", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.UserRole", b =>
@@ -263,7 +260,7 @@ namespace OtakuSect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Attachment", b =>
@@ -280,17 +277,11 @@ namespace OtakuSect.Data.Migrations
                         .WithMany("Attachments")
                         .HasForeignKey("PostId");
 
-                    b.HasOne("OtakuSect.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Article");
 
                     b.Navigation("Comment");
 
                     b.Navigation("Post");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OtakuSect.Data.Category", b =>
@@ -359,11 +350,17 @@ namespace OtakuSect.Data.Migrations
 
             modelBuilder.Entity("OtakuSect.Data.User", b =>
                 {
+                    b.HasOne("OtakuSect.Data.Attachment", "ProfilePic")
+                        .WithMany()
+                        .HasForeignKey("ProfilePicId");
+
                     b.HasOne("OtakuSect.Data.UserRole", "UserRole")
                         .WithMany()
                         .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ProfilePic");
 
                     b.Navigation("UserRole");
                 });
