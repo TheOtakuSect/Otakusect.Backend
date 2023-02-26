@@ -19,18 +19,18 @@ namespace OtakuSect.Controllers
         }
 
         [HttpPost("user/role")]
-        [SwaggerOperation(Summary = "Change User Role to Sect Eeader")]
-        public IActionResult ChangeUserRole([FromQuery] Guid id)
+        [SwaggerOperation(Summary = "Change User Role to Sect Elder")]
+        public async Task<IActionResult> ChangeUserRole([FromQuery] Guid id)
         {
-            var result = _adminService.ChangeRole(id);
+            var result = await _adminService.ChangeRole(id);
             return Ok(result);
         }
 
         [HttpGet("users")]
         [SwaggerOperation(Summary = "Get all users only possible by admin")]
-        public IActionResult GetallUser()
+        public async Task<IActionResult> GetallUser()
         {
-            var result = _adminService.GetAllUser();
+            var result = await _adminService.GetAllUser();
             return Ok(result);
         }
     }

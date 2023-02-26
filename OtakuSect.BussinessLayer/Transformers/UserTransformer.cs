@@ -12,6 +12,7 @@ namespace OtakuSect.BussinessLayer.Transformers
             {
                 userResponses.Add(new UserResponse
                 {
+                    Id= user.Id,
                     UserName = user.UserName,
                     Email = user.EmailAddress,
                     ProfilePic = user.ProfilePic,
@@ -26,6 +27,7 @@ namespace OtakuSect.BussinessLayer.Transformers
         {
             UserResponse userResponse = new()
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.EmailAddress,
                 ProfilePic = user.ProfilePic,

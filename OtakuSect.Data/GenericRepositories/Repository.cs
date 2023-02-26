@@ -30,18 +30,9 @@ namespace OtakuSect.Data.GenericRepositories
 
         public async Task<T> AddAsync(T item)
         {
-            try
-            {
-
-                await _context.Set<T>().AddAsync(item);
-                await _context.SaveChangesAsync();
-                return item;
-            }
-            catch (Exception ex)
-            {
-                string message = ex.ToString();
-                return null;
-            }
+            await _context.Set<T>().AddAsync(item);
+            await _context.SaveChangesAsync();
+            return item;
         }
 
         public T UpdateAsync(T item)
