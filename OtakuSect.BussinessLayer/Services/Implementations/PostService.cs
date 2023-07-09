@@ -37,7 +37,12 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
         {
             try
             {
-                var post = await _postRepo.GetByIdAsync(pId);
+
+                var post = await _postRepo.GetByIdAsync(pId, x => x.Attachments);
+                int views = await _postRepo.FetchViewCount(pId);
+                views++;
+                post.ViewCount = views;
+                _postRepo.UpdateAsync(post);
                 var response = PostTransformer.GetPostResponseFromPost(post);
                 return ResponseCreater<PostResponse>.CreateSuccessResponse(response, "Post loaded successfully.");
             }
@@ -56,7 +61,7 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
                     Id = Guid.NewGuid(),
                     Title = postRequest.Title,
                     Description = postRequest.Description,
-                    Tags= postRequest.Tags,
+                    Tags = postRequest.Tags,
                     Attachments = postRequest.Files?.Count > 0 ? _attachmentService.UploadFile(postRequest.Files) : new List<Attachment>(),
                     IsSafeToWatch = postRequest.IsSafeToWatch,
                     UserId = userId

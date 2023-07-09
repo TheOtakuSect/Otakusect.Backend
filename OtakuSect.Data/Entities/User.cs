@@ -12,5 +12,6 @@
         public Guid UserRoleId { get; set; }
         public List<UserArticle> UserArticles { get; set; }
         public string ProfilePic { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

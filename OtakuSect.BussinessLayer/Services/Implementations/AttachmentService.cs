@@ -15,7 +15,7 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
         public List<Attachment> UploadFile(List<IFormFile> files)
         {
             var list_attachment = new List<Attachment>();
-            string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot");
+            string directoryPath = @"C:\Users\anant\Desktop\OtakuFronted\Public\Attachments";
             foreach (var file in files)
             {
                 var newGuid = Guid.NewGuid();
@@ -36,7 +36,7 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
 
         public string UploadProfile(IFormFile file)
         {
-            string directoryPath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot/profile");
+            string directoryPath = @"C:\Users\anant\Desktop\OtakuFronted\Public\Profile";
             var image = Guid.NewGuid().ToString() +file.FileName.Split('.')[1];
             string filepath = Path.Combine(directoryPath, image);
             using var stream = new FileStream(filepath, FileMode.Create);

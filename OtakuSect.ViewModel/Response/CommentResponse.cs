@@ -5,6 +5,7 @@ namespace OtakuSect.ViewModel.Response
     public class CommentResponse
     {
         public Guid Id { get; set; }
+        public Guid ParentCommentId { get; set; }
         public string Description { get; set; }
         public int Upvote { get; set; }
         public int Downvote { get; set; }

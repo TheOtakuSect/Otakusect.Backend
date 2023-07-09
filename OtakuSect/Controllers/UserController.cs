@@ -26,12 +26,40 @@ namespace OtakuSect.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = "SectMaster,SectElder,Disciple")]
-        [SwaggerOperation(Summary = "Update Users")]
-        public async Task<IActionResult> Update([FromForm] UserUpdateRequest userUpdateRequest)
+        [Authorize]
+        [SwaggerOperation(Summary = "update the user")]
+        public IActionResult UpdateUser([FromForm] UserUpdateRequest request)
         {
-           var userId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var result = await _userService.UpdateUser(userId,userUpdateRequest);
+            var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
+            var result = _userService.EditUser(uId, request);
+            return Ok(result);
+        }
+
+        [HttpGet("user")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "gets user by id")]
+        public async Task<IActionResult> GetUserById([FromQuery] Guid userId)
+        {
+            var user = await _userService.GetUser(userId);
+            return Ok(user);
+        }
+
+        [HttpGet("allusers")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "gets all users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var user = await _userService.AllUsers();
+            return Ok(user);
+        }
+
+
+        [HttpGet("getelders")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "get the sect elders")]
+        public async Task<IActionResult> GetSectElders()
+        {
+            var result = await _userService.GetElders();
             return Ok(result);
         }
     }

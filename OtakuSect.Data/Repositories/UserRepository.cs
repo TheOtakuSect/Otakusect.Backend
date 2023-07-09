@@ -2,6 +2,7 @@
 using OtakuSect.Data.Context;
 using OtakuSect.Data.Entities;
 using OtakuSect.Data.GenericRepositories;
+using System.Linq.Expressions;
 
 namespace OtakuSect.Data.Repositories
 {
@@ -36,6 +37,22 @@ namespace OtakuSect.Data.Repositories
             var current_user = await _context.Users.Include(x => x.UserRole).FirstOrDefaultAsync(
                 o => o.UserName.ToLower() == username.ToLower() && o.Password == password);
             return current_user;
+        }
+
+        public async Task<User> GetByIdAsync(Guid Id, params Expression<Func<User, object>>[] includes)
+        {
+            IQueryable<User> query = _context.Set<User>();
+
+            // Apply any included navigation properties to the query
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            // Execute the query to retrieve the entity by its Id
+            User entity = await query.FirstOrDefaultAsync(e => e.Id == Id);
+
+            return entity;
         }
     }
 }

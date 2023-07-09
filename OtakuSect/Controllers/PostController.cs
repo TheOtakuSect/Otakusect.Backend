@@ -42,14 +42,14 @@ namespace OtakuSect.Controllers
         [HttpPost]
         [Authorize]
         [SwaggerOperation(Summary = "Save post in database")]
-        public IActionResult PostContent([FromForm] PostRequest PostRequest)
+        public IActionResult PostContent([FromForm] PostRequest postRequest)
         {
             var uId = _authService.GetCurrentUser(HttpContext.User.Identity as ClaimsIdentity).UserId;
-            var post = _postService.PostContent(uId, PostRequest);
-            return Ok(post);
+            var post = _postService.PostContent(uId, postRequest);
+            return StatusCode(post.StatusCode, post);
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Authorize]
         [SwaggerOperation(Summary = "Edit post")]
         public async Task<IActionResult> EditPost([FromForm] PostUpdateRequest PostRequest)
@@ -70,5 +70,7 @@ namespace OtakuSect.Controllers
             }
             return BadRequest();
         }
+
+
     }
 }

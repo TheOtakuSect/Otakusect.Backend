@@ -17,6 +17,22 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
             _attachmentService = attachmentService;
         }
 
+        public async Task<ApiResponse<List<UserResponse>>> AllUsers()
+        {
+            {
+                try
+                {
+                    var results = await _userRepository.GetAllAsync(u => u.UserRole);
+                    var response = UserTransformer.GetUserResponseFromUser(results.ToList());
+                    return ResponseCreater<List<UserResponse>>.CreateSuccessResponse(response, "Users loaded successfully");
+                }
+                catch (Exception ex)
+                {
+                    return ResponseCreater<List<UserResponse>>.CreateErrorResponse(null, ex.ToString());
+                }
+            }
+        }
+
         public ApiResponse<bool> CheckUser(string userName)
         {
             try
@@ -30,27 +46,53 @@ namespace OtakuSect.BussinessLayer.Services.Implementations
             }
         }
 
-        public async Task<ApiResponse<UserResponse>> UpdateUser(Guid userId,UserUpdateRequest userUpdateRequest)
+        public async Task<ApiResponse<UserResponse>> EditUser(Guid uId, UserUpdateRequest request)
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(userId);
-                if (user == null)
-                {
-                    return ResponseCreater<UserResponse>.CreateNotFoundResponse(null, "User not found");
-                }
-                user.UserName = userUpdateRequest.UserName;
-                user.FullName = userUpdateRequest.FullName;
-                user.EmailAddress = userUpdateRequest.EmailAddress;
-                user.ProfilePic = userUpdateRequest.File!=null?_attachmentService.UploadProfile(userUpdateRequest.File):user.ProfilePic;
+                var user = await _userRepository.GetByIdAsync(uId);
+                user.FullName = request.FullName;
+                user.UserName = request.UserName;
+                user.EmailAddress = request.EmailAddress;
                 _userRepository.UpdateAsync(user);
-
                 var response = UserTransformer.GetUserResponseFromUser(user);
-                return ResponseCreater<UserResponse>.CreateSuccessResponse(response, "User updated successfully");
+                return ResponseCreater<UserResponse>.CreateSuccessResponse(response, "user updated successfully");
             }
             catch (Exception ex)
             {
                 return ResponseCreater<UserResponse>.CreateErrorResponse(null, ex.ToString());
+
+            }
+
+        }
+
+        public async Task<ApiResponse<List<UserResponse>>> GetElders()
+        {
+            try
+            {
+                var elders = await _userRepository.GetAllAsync(u => u.UserRole);
+                var results = elders.Where(x => x.UserRole.Role == "SectElder").ToList();
+                var response = UserTransformer.GetUserResponseFromUser(results);
+                return ResponseCreater<List<UserResponse>>.CreateSuccessResponse(response, "Users loaded successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseCreater<List<UserResponse>>.CreateErrorResponse(null, ex.ToString());
+            }
+        }
+
+        public async Task<ApiResponse<UserResponse>> GetUser(Guid Id)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(Id);
+                var response = UserTransformer.GetUserResponseFromUser(user);
+                return ResponseCreater<UserResponse>.CreateSuccessResponse(response, "Users loaded successfully");
+            }
+            catch (Exception ex)
+            {
+                return ResponseCreater<UserResponse>.CreateErrorResponse(null, ex.ToString());
+
             }
         }
     }

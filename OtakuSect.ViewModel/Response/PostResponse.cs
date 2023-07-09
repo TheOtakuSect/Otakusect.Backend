@@ -8,10 +8,10 @@
         public bool IsSafeToWatch { get; set; }
         public string Tags { get; set; }
         public DateTime PostedDateTime { get; set; }
-        public double TotalRate { get; set; }
-        public int ViewCount { get; set; }
+        public double? TotalRate { get; set; }
+        public int ?ViewCount { get; set; }
         public PostUser User { get; set; }
-        public List<string> Attachments { get; set; }
+        public List<string>? Attachments { get; set; }
     }
 
     public class PostUser

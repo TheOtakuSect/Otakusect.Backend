@@ -1,4 +1,5 @@
-﻿using OtakuSect.BussinessLayer.Helper;
+﻿using Azure;
+using OtakuSect.BussinessLayer.Helper;
 using OtakuSect.BussinessLayer.Services.Interface;
 using OtakuSect.BussinessLayer.Transformers;
 using OtakuSect.Data.Entities;
@@ -109,6 +110,27 @@ namespace OtakuSect.BussinessLayer
             {
                 return ResponseCreater<string>.CreateErrorResponse(null, ex.ToString());
             }
+        }
+
+        public async Task<ArticleResponse> TestArticle(Guid userId, ArticleRequest articleRequest)
+        {
+            var article = new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = articleRequest.Title,
+                Description = articleRequest.Description,
+                Attachments = articleRequest.Files?.Count > 0 ? _attachmentService.UploadFile(articleRequest.Files) : new List<Attachment>()
+            };
+            var userArticle = new UserArticle
+            {
+                Id = Guid.NewGuid(),
+                Article = article,
+                UserId = userId
+            };
+            await _articleRepo.PostWithUser(userArticle);
+            var response = ArticleTransformer.GetArticleResponseFromArticle(article);
+            return response;
+
         }
     }
 }

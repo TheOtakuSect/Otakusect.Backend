@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OtakuSect.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class V2 : Migration
+    public partial class sectDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,8 +89,8 @@ namespace OtakuSect.Data.Migrations
                     IsSafeToWatch = table.Column<bool>(type: "bit", nullable: false),
                     Tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalRate = table.Column<double>(type: "float", nullable: false),
-                    ViewCount = table.Column<int>(type: "int", nullable: false),
+                    TotalRate = table.Column<double>(type: "float", nullable: true),
+                    ViewCount = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -197,7 +197,6 @@ namespace OtakuSect.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -220,11 +219,6 @@ namespace OtakuSect.Data.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Attachments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -241,11 +235,6 @@ namespace OtakuSect.Data.Migrations
                 name: "IX_Attachments_PostId",
                 table: "Attachments",
                 column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Attachments_UserId",
-                table: "Attachments",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ArticleId",

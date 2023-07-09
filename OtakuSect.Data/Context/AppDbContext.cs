@@ -45,7 +45,7 @@ namespace OtakuSect.Data.Context
                 entity.HasMany(d => d.UserArticles);
                 entity.HasMany(d => d.Categories);
                 entity.HasMany(d => d.Attachments);
-                entity.HasMany(d => d.Comments);
+                entity.HasMany(d => d.Comments).WithOne(x=>x.Article);
 
             });
             modelBuilder.Entity<UserArticle>(entity =>
@@ -53,6 +53,7 @@ namespace OtakuSect.Data.Context
                 entity.HasOne(d => d.User);
                 entity.HasOne(d => d.Article);
             });
+            
         }
     }
 }

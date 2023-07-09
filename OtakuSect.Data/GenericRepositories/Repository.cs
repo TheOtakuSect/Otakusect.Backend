@@ -25,7 +25,7 @@ namespace OtakuSect.Data.GenericRepositories
 
         public async Task<T> GetByIdAsync(Guid Id)
         {
-            return await _context.Set<T>().FindAsync(Id);
+           return await _context.Set<T>().FindAsync(Id);
         }
 
         public async Task<T> AddAsync(T item)
@@ -37,7 +37,7 @@ namespace OtakuSect.Data.GenericRepositories
 
         public T UpdateAsync(T item)
         {
-            _context.Update(item);
+           // _context.Update(item);
             _context.SaveChanges();
             return item;
         }
